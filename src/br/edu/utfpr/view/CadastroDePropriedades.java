@@ -346,6 +346,11 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     private void jFormattedTextFieldCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPFocusLost
         Cep cep = new Cep();
         
+        jTextFieldCidade.setText("");
+        jTextFieldEstado.setText("");
+        jTextFieldBairro.setText("");
+        jTextFieldEndereco.setText("");
+            
         if (cep.buscarCep(jFormattedTextFieldCEP.getText().toString().replaceAll("[^0-9]+", ""))) {
             jTextFieldCidade.setText(cep.getCidade());
             jTextFieldEstado.setText(cep.getUf());
