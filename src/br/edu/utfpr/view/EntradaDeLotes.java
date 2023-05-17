@@ -5,7 +5,7 @@
 package br.edu.utfpr.view;
 
 import br.edu.utfpr.classes.EntradaLotes;
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import javax.swing.JOptionPane;
 
 /**
@@ -303,34 +303,34 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jTextFieldIdentificador.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Identificador");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Identificador");
             jTextFieldIdentificador.requestFocus();
             return false;
         } else if (jComboBoxGranjas.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido","Selecione uma Granja");
+            mensagens.errorMessage("Campo Inválido","Selecione uma Granja");
             jComboBoxGranjas.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeFrangos.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Quantidade de Frangos");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Quantidade de Frangos");
             jFormattedTextFieldQuantidadeFrangos.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeFrangos.getText().toString().equals("0")) {
-            funcoes.errorMessage("Campo Inválido","Preencha uma Quantidade maior que 0");
+            mensagens.errorMessage("Campo Inválido","Preencha uma Quantidade maior que 0");
             jFormattedTextFieldQuantidadeFrangos.requestFocus();
             return false;
         } else if (jFormattedTextFieldValorEntrada.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Valor de Entrada do Lote");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Valor de Entrada do Lote");
             jFormattedTextFieldValorEntrada.requestFocus();
             return false;
         } else if (jFormattedTextFieldValorEntrada.getText().toString().equals("0,00")) {
-            funcoes.errorMessage("Campo Inválido","Preencha um Valor de Entrada do Lote maior que 0");
+            mensagens.errorMessage("Campo Inválido","Preencha um Valor de Entrada do Lote maior que 0");
             jFormattedTextFieldValorEntrada.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataEntrada.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Data da Entrada");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Data da Entrada");
             jFormattedTextFieldDataEntrada.requestFocus();
             return false;
         } else {

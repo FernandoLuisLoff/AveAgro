@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.classes.Produtos;
 
 /**
@@ -300,34 +300,34 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jTextFieldProduto.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Produto");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Produto");
             jTextFieldProduto.requestFocus();
             return false;
         } else if (jTextFieldCategoria.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Categoria");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Categoria");
             jTextFieldCategoria.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeVolume.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Quantidade/Volume");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Quantidade/Volume");
             jFormattedTextFieldQuantidadeVolume.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeVolume.getText().toString().equals("0")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha uma Quantidade/Volume maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha uma Quantidade/Volume maior que 0");
             jFormattedTextFieldQuantidadeVolume.requestFocus();
             return false;
         }  else if (jTextFieldUnidadeMedida.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Unidade de Medida");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Unidade de Medida");
             jTextFieldUnidadeMedida.requestFocus();
             return false;
         } else if (jFormattedTextFieldValor.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Valor");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Valor");
             jFormattedTextFieldValor.requestFocus();
             return false;
         } else if (jFormattedTextFieldValor.getText().toString().equals("0,00")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha um Valor maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha um Valor maior que 0");
             jFormattedTextFieldValor.requestFocus();
             return false;
         } else {

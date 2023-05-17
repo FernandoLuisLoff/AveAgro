@@ -15,17 +15,19 @@ public class Propriedades {
     String cep;
     String cidade;
     String estado;
+    String bairro;
     String enderedo;
     String numero;
     String complemento;
     
     public Propriedades(String nomePropriedade, String dataAquisicao, String cep, String cidade,
-    String estado, String enderedo, String numero, String complemento) {
+    String estado, String bairro, String enderedo, String numero, String complemento) {
         this.nomePropriedade = nomePropriedade;
         this.dataAquisicao = dataAquisicao;
         this.cep = cep;
         this.cidade = cidade;
         this.estado = estado;
+        this.bairro = bairro;
         this.enderedo = enderedo;
         this.numero = numero;
         this.complemento = complemento;

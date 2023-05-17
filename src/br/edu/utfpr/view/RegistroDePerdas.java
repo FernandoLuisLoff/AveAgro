@@ -1,6 +1,6 @@
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.classes.Perdas;
 
 /*
@@ -288,26 +288,26 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jComboBoxLotes.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido","Selecione um Lote");
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
         } else if (jTextFieldDescricaoMotivo.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Descrição/Motivo");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Descrição/Motivo");
             jTextFieldDescricaoMotivo.requestFocus();
             return false;
         } else if (jFormattedTextFieldContagemPerdas.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Preencha o campo Contagem de Perdas");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Preencha o campo Contagem de Perdas");
             jFormattedTextFieldContagemPerdas.requestFocus();
             return false;
         } else if (jFormattedTextFieldContagemPerdas.getText().toString().equals("0")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha uma Contagem de Perdas maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha uma Contagem de Perdas maior que 0");
             jFormattedTextFieldContagemPerdas.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataContagem.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Data da Contagem");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Data da Contagem");
             jFormattedTextFieldDataContagem.requestFocus();
             return false;
         } else {

@@ -1,7 +1,7 @@
 package br.edu.utfpr.view;
 
 import br.edu.utfpr.classes.Custos;
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -107,31 +107,6 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
             .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonFecharAba1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSalvar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                        .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelQuantidade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jFormattedTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelLote)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxLotes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelProduto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelValor)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFieldValor))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRegistrarCustosAba1Layout.createSequentialGroup()
                         .addComponent(jLabelDescricaoMotivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -140,7 +115,29 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                         .addComponent(jLabelDataContagem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jFormattedTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRegistrarCustosAba1Layout.createSequentialGroup()
+                        .addComponent(jButtonFecharAba1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonSalvar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRegistrarCustosAba1Layout.createSequentialGroup()
+                        .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
+                                .addComponent(jLabelQuantidade)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jFormattedTextFieldQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelRegistrarCustosAba1Layout.createSequentialGroup()
+                                .addComponent(jLabelLote)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxLotes, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelProduto)
+                            .addComponent(jLabelValor))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jFormattedTextFieldValor)
+                            .addComponent(jComboBoxProduto, 0, 212, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanelRegistrarCustosAba1Layout.setVerticalGroup(
@@ -283,13 +280,13 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonFecharAba1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba1ActionPerformed
-        super.dispose();
-    }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
-
     private void jButtonFecharAba2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba2ActionPerformed
         super.dispose();
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
+
+    private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (validaCampos()) {
@@ -301,15 +298,15 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                 jTextFieldDescricaoMotivo.getText(),
                 jFormattedTextFieldData.getText().toString()
             );
-            
+
             custos.salvar();
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
-    private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonPesquisarActionPerformed
+    private void jButtonFecharAba1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba1ActionPerformed
+        super.dispose();
+    }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
 
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
@@ -321,38 +318,38 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jComboBoxLotes.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido","Selecione um Lote");
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
         } else if (jComboBoxProduto.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido","Selecione um Produto");
+            mensagens.errorMessage("Campo Inválido","Selecione um Produto");
             jComboBoxProduto.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidade.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Quantidade");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Quantidade");
             jFormattedTextFieldQuantidade.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidade.getText().toString().equals("0,00")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha uma Quantidade maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha uma Quantidade maior que 0");
             jFormattedTextFieldQuantidade.requestFocus();
             return false;
         } else if (jFormattedTextFieldValor.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Valor");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Valor");
             jFormattedTextFieldValor.requestFocus();
             return false;
         } else if (jFormattedTextFieldValor.getText().toString().equals("0,00")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha um Valor maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha um Valor maior que 0");
             jFormattedTextFieldValor.requestFocus();
             return false;
         }  else if (jTextFieldDescricaoMotivo.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Descrição/Motivo");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Descrição/Motivo");
             jTextFieldDescricaoMotivo.requestFocus();
             return false;
         } else if (jFormattedTextFieldData.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Data");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Data");
             jFormattedTextFieldData.requestFocus();
             return false;
         } else {

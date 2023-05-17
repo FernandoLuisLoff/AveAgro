@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.classes.SaidaLotes;
 
 /**
@@ -265,22 +265,22 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jComboBoxLotes.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido","Selecione um Lote");
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
         } else if (jFormattedTextFieldValorSaida.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Valor de Saída do Lote");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Valor de Saída do Lote");
             jFormattedTextFieldValorSaida.requestFocus();
             return false;
         } else if (jFormattedTextFieldValorSaida.getText().toString().equals("0,00")) {
-            funcoes.errorMessage("Campo Inválido","Preencha um Valor de Saída do Lote maior que 0");
+            mensagens.errorMessage("Campo Inválido","Preencha um Valor de Saída do Lote maior que 0");
             jFormattedTextFieldValorSaida.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataSaida.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Data da Saída");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Data da Saída");
             jFormattedTextFieldDataSaida.requestFocus();
             return false;
         } else {

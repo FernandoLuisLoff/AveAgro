@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import java.awt.Image; 
 import java.awt.Graphics; 
 import javax.swing.ImageIcon;
@@ -151,13 +151,9 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
         jMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/sair.png"))); // NOI18N
         jMenuSair.setText("Sair");
-        jMenuSair.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                jMenuSairMenuSelected(evt);
+        jMenuSair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuSairMouseClicked(evt);
             }
         });
         jMenuBarFormularioPrincipal.add(jMenuSair);
@@ -266,12 +262,12 @@ public class FormularioPrincipal extends javax.swing.JFrame {
         relatorioDeLote.setVisible(true);
     }//GEN-LAST:event_jMenuItemRelatorioLoteActionPerformed
 
-    private void jMenuSairMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuSairMenuSelected
-        Funcoes funcoes = new Funcoes();
-        if(funcoes.confirmMessage("Sair", "Tem certeza que deseja encerrar a aplicação?")){
+    private void jMenuSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSairMouseClicked
+        Mensagens mensagens = new Mensagens();
+        if(mensagens.confirmMessage("Sair", "Tem certeza que deseja encerrar a aplicação?")){
             System.exit(0);
         }
-    }//GEN-LAST:event_jMenuSairMenuSelected
+    }//GEN-LAST:event_jMenuSairMouseClicked
 
     /**
      * @param args the command line arguments

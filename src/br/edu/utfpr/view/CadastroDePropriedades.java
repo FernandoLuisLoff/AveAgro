@@ -4,8 +4,9 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.classes.Propriedades;
+import br.edu.utfpr.funcoes.Cep;
 
 /**
  *
@@ -49,6 +50,8 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
         jTextFieldComplemento = new javax.swing.JTextField();
         jFormattedTextFieldDataAquisicao = new javax.swing.JFormattedTextField();
         jFormattedTextFieldCEP = new javax.swing.JFormattedTextField();
+        jLabelBairro = new javax.swing.JLabel();
+        jTextFieldBairro = new javax.swing.JTextField();
         jPanelPropriedadesCadastradasAba2 = new javax.swing.JPanel();
         jButtonFecharAba2 = new javax.swing.JButton();
         jScrollPanelPropriedadesCadastradas = new javax.swing.JScrollPane();
@@ -105,55 +108,62 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextFieldCEP.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextFieldCEPFocusLost(evt);
+            }
+        });
+
+        jLabelBairro.setText("Bairro");
 
         javax.swing.GroupLayout jPanelAdicionarPropriedadeAba1Layout = new javax.swing.GroupLayout(jPanelAdicionarPropriedadeAba1);
         jPanelAdicionarPropriedadeAba1.setLayout(jPanelAdicionarPropriedadeAba1Layout);
         jPanelAdicionarPropriedadeAba1Layout.setHorizontalGroup(
             jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
-                        .addComponent(jLabelNomePropriedade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNomePropriedade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelDataAquisicao)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFormattedTextFieldDataAquisicao, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+                .addGroup(jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
                         .addComponent(jLabelComplemento)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
-                                .addGap(391, 391, 391)
-                                .addComponent(jLabelEstado)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
-                            .addComponent(jTextFieldComplemento)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+                        .addComponent(jTextFieldComplemento))
+                    .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonFecharAba1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonSalvar))
-                    .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
-                        .addGroup(jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelEndereco)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldEndereco))
-                            .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
-                                .addComponent(jLabelCEP)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFieldCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelCidade)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+                        .addComponent(jLabelEndereco)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldEndereco)
+                        .addGap(12, 12, 12)
                         .addComponent(jLabelNumero)
-                        .addGap(8, 8, 8)
-                        .addComponent(jTextFieldNumero)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+                        .addComponent(jLabelNomePropriedade)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNomePropriedade, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelDataAquisicao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFormattedTextFieldDataAquisicao, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
+                        .addComponent(jLabelCEP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFormattedTextFieldCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCidade)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelEstado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelBairro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldBairro)))
                 .addContainerGap())
         );
         jPanelAdicionarPropriedadeAba1Layout.setVerticalGroup(
@@ -172,7 +182,9 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
                     .addComponent(jLabelEstado)
                     .addComponent(jTextFieldEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCEP)
-                    .addComponent(jFormattedTextFieldCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFormattedTextFieldCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBairro)
+                    .addComponent(jTextFieldBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelAdicionarPropriedadeAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelEndereco)
@@ -244,7 +256,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             .addGroup(jPanelPropriedadesCadastradasAba2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPropriedadesCadastradasAba2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPanelPropriedadesCadastradas, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                    .addComponent(jScrollPanelPropriedadesCadastradas, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
                     .addGroup(jPanelPropriedadesCadastradasAba2Layout.createSequentialGroup()
                         .addComponent(jLabelNomePropriedadePesquisa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,6 +328,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
                 jFormattedTextFieldCEP.getText().toString().replaceAll("[^0-9]+", ""),
                 jTextFieldCidade.getText(),
                 jTextFieldEstado.getText(),
+                jTextFieldBairro.getText(),
                 jTextFieldEndereco.getText(),
                 jTextFieldNumero.getText(),
                 jTextFieldComplemento.getText()
@@ -330,46 +343,62 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
+    private void jFormattedTextFieldCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPFocusLost
+        Cep cep = new Cep();
+        
+        if (cep.buscarCep(jFormattedTextFieldCEP.getText().toString().replaceAll("[^0-9]+", ""))) {
+            jTextFieldCidade.setText(cep.getCidade());
+            jTextFieldEstado.setText(cep.getUf());
+            jTextFieldBairro.setText(cep.getBairro());
+            jTextFieldEndereco.setText(cep.getLogradouro());
+        }
+    }//GEN-LAST:event_jFormattedTextFieldCEPFocusLost
+
     private void limpaCampos() {
         jTextFieldNomePropriedade.setText("");
         jFormattedTextFieldDataAquisicao.setText("");
         jFormattedTextFieldCEP.setText("");
         jTextFieldCidade.setText("");
         jTextFieldEstado.setText("");
+        jTextFieldBairro.setText("");
         jTextFieldEndereco.setText("");
         jTextFieldNumero.setText("");
         jTextFieldComplemento.setText("");
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jTextFieldNomePropriedade.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Nome Propriedade");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Nome Propriedade");
             jTextFieldNomePropriedade.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataAquisicao.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Data Aquisição");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Data Aquisição");
             jFormattedTextFieldDataAquisicao.requestFocus();
             return false;
         } else if (jFormattedTextFieldCEP.getText().toString().replaceAll("[^0-9]+", "").isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo CEP");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo CEP");
             jFormattedTextFieldCEP.requestFocus();
             return false;
         } else if (jTextFieldCidade.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Cidade");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Cidade");
             jTextFieldCidade.requestFocus();
             return false;
         } else if (jTextFieldEstado.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Estado");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Estado");
             jTextFieldEstado.requestFocus();
             return false;
+        } else if (jTextFieldBairro.getText().isEmpty()) {
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Bairro");
+            jTextFieldBairro.requestFocus();
+            return false;
         } else if (jTextFieldEndereco.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Endereço");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Endereço");
             jTextFieldEndereco.requestFocus();
             return false;
         } else if (jTextFieldNumero.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido","Preencha o campo Numero");
+            mensagens.errorMessage("Campo Inválido","Preencha o campo Numero");
             jTextFieldNumero.requestFocus();
             return false;
         } else {
@@ -386,6 +415,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JFormattedTextField jFormattedTextFieldCEP;
     private javax.swing.JFormattedTextField jFormattedTextFieldDataAquisicao;
+    private javax.swing.JLabel jLabelBairro;
     private javax.swing.JLabel jLabelCEP;
     private javax.swing.JLabel jLabelCidade;
     private javax.swing.JLabel jLabelComplemento;
@@ -400,6 +430,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPanelPropriedadesCadastradas;
     private javax.swing.JTabbedPane jTabbedPanePropriedades;
     private javax.swing.JTable jTablePropriedadesCadastradas;
+    private javax.swing.JTextField jTextFieldBairro;
     private javax.swing.JTextField jTextFieldCidade;
     private javax.swing.JTextField jTextFieldComplemento;
     private javax.swing.JTextField jTextFieldEndereco;

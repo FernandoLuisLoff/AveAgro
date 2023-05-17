@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Funcoes;
+import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.classes.Granjas;
 
 /**
@@ -305,26 +305,26 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Funcoes funcoes = new Funcoes();
+        Mensagens mensagens = new Mensagens();
         
         if (jTextFieldIdentificador.getText().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Identificador");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Identificador");
             jTextFieldIdentificador.requestFocus();
             return false;
         } else if (jComboBoxPropriedade.getSelectedIndex() == 0) {
-            funcoes.errorMessage("Campo Inválido", "Selecione uma Propriedade");
+            mensagens.errorMessage("Campo Inválido", "Selecione uma Propriedade");
             jComboBoxPropriedade.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataIniAtividades.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Data de Inicio das Atividades");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Data de Inicio das Atividades");
             jFormattedTextFieldDataIniAtividades.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeFrangosSuportadas.getText().toString().isEmpty()) {
-            funcoes.errorMessage("Campo Inválido", "Preencha o campo Preencha o campo Quantidade de Frangos Suportada");
+            mensagens.errorMessage("Campo Inválido", "Preencha o campo Preencha o campo Quantidade de Frangos Suportada");
             jFormattedTextFieldQuantidadeFrangosSuportadas.requestFocus();
             return false;
         } else if (jFormattedTextFieldQuantidadeFrangosSuportadas.getText().toString().equals("0")) {
-            funcoes.errorMessage("Campo Inválido", "Preencha uma Quantidade de Frangos Suportada maior que 0");
+            mensagens.errorMessage("Campo Inválido", "Preencha uma Quantidade de Frangos Suportada maior que 0");
             jFormattedTextFieldQuantidadeFrangosSuportadas.requestFocus();
             return false;
         } else {
