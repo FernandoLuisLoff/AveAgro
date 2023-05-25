@@ -67,18 +67,18 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
 
         jTabbedPaneGranjas.setToolTipText("");
 
-        jLabelIdentificador.setText("Identificador");
+        jLabelIdentificador.setText("Identificador *");
         jLabelIdentificador.setName(""); // NOI18N
 
-        jLabelIdentificadorPropriedade.setText("Propriedade");
+        jLabelIdentificadorPropriedade.setText("Propriedade *");
         jLabelIdentificadorPropriedade.setName(""); // NOI18N
 
         jComboBoxPropriedade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione a Propriedade", "Propriedade Teste" }));
 
-        jLabelIdentificadorDataIniAtividades.setText("Data de Início das Atividades ");
+        jLabelIdentificadorDataIniAtividades.setText("Data de Início das Atividades * ");
         jLabelIdentificadorDataIniAtividades.setName(""); // NOI18N
 
-        jLabelFrangosSuportados.setText("Quantidade de Frangos Suportada ");
+        jLabelFrangosSuportados.setText("Quantidade de Frangos Suportada * ");
 
         jButtonFecharAba1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/fechar.png"))); // NOI18N
         jButtonFecharAba1.setText("Fechar");

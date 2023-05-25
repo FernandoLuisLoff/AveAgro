@@ -85,19 +85,19 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelNomePropriedade.setText("Nome da Propriedade");
+        jLabelNomePropriedade.setText("Nome da Propriedade *");
 
-        jLabelDataAquisicao.setText("Data de Aquisição");
+        jLabelDataAquisicao.setText("Data de Aquisição *");
 
-        jLabelCEP.setText("CEP");
+        jLabelCEP.setText("CEP *");
 
-        jLabelEstado.setText("Estado");
+        jLabelEstado.setText("Estado *");
 
-        jLabelCidade.setText("Cidade");
+        jLabelCidade.setText("Cidade *");
 
-        jLabelEndereco.setText("Endereço");
+        jLabelEndereco.setText("Endereço *");
 
-        jLabelNumero.setText("Número");
+        jLabelNumero.setText("Número *");
 
         jLabelComplemento.setText("Complemento");
 
@@ -114,7 +114,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelBairro.setText("Bairro");
+        jLabelBairro.setText("Bairro *");
 
         javax.swing.GroupLayout jPanelAdicionarPropriedadeAba1Layout = new javax.swing.GroupLayout(jPanelAdicionarPropriedadeAba1);
         jPanelAdicionarPropriedadeAba1.setLayout(jPanelAdicionarPropriedadeAba1Layout);
@@ -143,7 +143,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
                     .addGroup(jPanelAdicionarPropriedadeAba1Layout.createSequentialGroup()
                         .addComponent(jLabelNomePropriedade)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldNomePropriedade, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                        .addComponent(jTextFieldNomePropriedade, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelDataAquisicao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

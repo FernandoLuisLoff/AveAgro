@@ -72,13 +72,13 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
 
         jComboBoxLotes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Lote", "Lote Teste" }));
 
-        jLabelLote.setText("Lote ");
+        jLabelLote.setText("Lote * ");
 
-        jLabelValorSaida.setText("Valor de Saída do Lote");
+        jLabelValorSaida.setText("Valor de Saída do Lote *");
 
         jFormattedTextFieldValorSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
-        jLabelDataSaida.setText("Data da Saída");
+        jLabelDataSaida.setText("Data da Saída *");
 
         jFormattedTextFieldDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
@@ -94,7 +94,7 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelRegistrarSaidasLoteAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelRegistrarSaidasLoteAba1Layout.createSequentialGroup()
-                                .addGap(0, 220, Short.MAX_VALUE)
+                                .addGap(0, 213, Short.MAX_VALUE)
                                 .addComponent(jButtonFecharAba1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonSalvar))

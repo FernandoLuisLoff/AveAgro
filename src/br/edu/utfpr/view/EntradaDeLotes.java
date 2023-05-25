@@ -75,21 +75,21 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelIdentificador.setText("Identificador");
+        jLabelIdentificador.setText("Identificador *");
 
-        jLabelQuantidadeFrangos.setText("Quantidade de Frangos");
+        jLabelQuantidadeFrangos.setText("Quantidade de Frangos *");
 
         jComboBoxGranjas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione a Granja", "Granja Teste" }));
 
         jFormattedTextFieldQuantidadeFrangos.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0"))));
 
-        jLabelGranja.setText("Granja");
+        jLabelGranja.setText("Granja *");
 
-        jLabelValorEntrada.setText("Valor de Entrada do Lote");
+        jLabelValorEntrada.setText("Valor de Entrada do Lote *");
 
         jFormattedTextFieldValorEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
-        jLabelDataEntrada.setText("Data da Entrada");
+        jLabelDataEntrada.setText("Data da Entrada *");
 
         jFormattedTextFieldDataEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
@@ -112,7 +112,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
                     .addGroup(jPanelRegistrarEntradaLoteAba1Layout.createSequentialGroup()
                         .addComponent(jLabelGranja)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxGranjas, 0, 418, Short.MAX_VALUE))
+                        .addComponent(jComboBoxGranjas, 0, 411, Short.MAX_VALUE))
                     .addGroup(jPanelRegistrarEntradaLoteAba1Layout.createSequentialGroup()
                         .addGroup(jPanelRegistrarEntradaLoteAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelQuantidadeFrangos)

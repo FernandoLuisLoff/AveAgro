@@ -4,6 +4,7 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.ConexaoDAO;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.awt.Image; 
 import java.awt.Graphics; 
@@ -22,6 +23,8 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     public FormularioPrincipal() {
         initComponents();
         super.setExtendedState(FormularioPrincipal.MAXIMIZED_BOTH);
+        
+        ConexaoDAO conexao = new ConexaoDAO();
     }
 
     /**
@@ -151,6 +154,11 @@ public class FormularioPrincipal extends javax.swing.JFrame {
 
         jMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/sair.png"))); // NOI18N
         jMenuSair.setText("Sair");
+        jMenuSair.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jMenuSairFocusGained(evt);
+            }
+        });
         jMenuSair.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuSairMouseClicked(evt);
@@ -268,6 +276,10 @@ public class FormularioPrincipal extends javax.swing.JFrame {
             System.exit(0);
         }
     }//GEN-LAST:event_jMenuSairMouseClicked
+
+    private void jMenuSairFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jMenuSairFocusGained
+        
+    }//GEN-LAST:event_jMenuSairFocusGained
 
     /**
      * @param args the command line arguments

@@ -99,7 +99,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jFormattedTextFieldValor" max="32767" attributes="0"/>
-                                  <Component id="jComboBoxProduto" pref="212" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxProduto" pref="198" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -182,12 +182,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelLote">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lote "/>
+                <Property name="text" type="java.lang.String" value="Lote * "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelProduto">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Produto"/>
+                <Property name="text" type="java.lang.String" value="Produto *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="jComboBoxProduto">
@@ -212,12 +212,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelQuantidade">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Quantidade"/>
+                <Property name="text" type="java.lang.String" value="Quantidade *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelValor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Valor"/>
+                <Property name="text" type="java.lang.String" value="Valor *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldValor">
@@ -236,13 +236,13 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelDataContagem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Data"/>
+                <Property name="text" type="java.lang.String" value="Data *"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelDescricaoMotivo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o/Motivo"/>
+                <Property name="text" type="java.lang.String" value="Descri&#xe7;&#xe3;o/Motivo *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldDescricaoMotivo">

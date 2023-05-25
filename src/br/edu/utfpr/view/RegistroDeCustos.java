@@ -79,26 +79,26 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
 
         jComboBoxLotes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Lote", "Lote Teste" }));
 
-        jLabelLote.setText("Lote ");
+        jLabelLote.setText("Lote * ");
 
-        jLabelProduto.setText("Produto");
+        jLabelProduto.setText("Produto *");
 
         jComboBoxProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Produto", "Produto Teste" }));
 
         jFormattedTextFieldQuantidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
-        jLabelQuantidade.setText("Quantidade");
+        jLabelQuantidade.setText("Quantidade *");
 
-        jLabelValor.setText("Valor");
+        jLabelValor.setText("Valor *");
 
         jFormattedTextFieldValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
         jFormattedTextFieldData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
 
-        jLabelDataContagem.setText("Data");
+        jLabelDataContagem.setText("Data *");
         jLabelDataContagem.setToolTipText("");
 
-        jLabelDescricaoMotivo.setText("Descrição/Motivo");
+        jLabelDescricaoMotivo.setText("Descrição/Motivo *");
 
         javax.swing.GroupLayout jPanelRegistrarCustosAba1Layout = new javax.swing.GroupLayout(jPanelRegistrarCustosAba1);
         jPanelRegistrarCustosAba1.setLayout(jPanelRegistrarCustosAba1Layout);
@@ -137,7 +137,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedTextFieldValor)
-                            .addComponent(jComboBoxProduto, 0, 212, Short.MAX_VALUE))))
+                            .addComponent(jComboBoxProduto, 0, 198, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanelRegistrarCustosAba1Layout.setVerticalGroup(

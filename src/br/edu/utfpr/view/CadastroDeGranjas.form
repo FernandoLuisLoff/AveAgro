@@ -164,13 +164,13 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabelIdentificador">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Identificador"/>
+                <Property name="text" type="java.lang.String" value="Identificador *"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelIdentificadorPropriedade">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Propriedade"/>
+                <Property name="text" type="java.lang.String" value="Propriedade *"/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
               </Properties>
             </Component>
@@ -189,13 +189,13 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelIdentificadorDataIniAtividades">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Data de In&#xed;cio das Atividades "/>
+                <Property name="text" type="java.lang.String" value="Data de In&#xed;cio das Atividades * "/>
                 <Property name="name" type="java.lang.String" value="" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelFrangosSuportados">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Quantidade de Frangos Suportada "/>
+                <Property name="text" type="java.lang.String" value="Quantidade de Frangos Suportada * "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonFecharAba1">

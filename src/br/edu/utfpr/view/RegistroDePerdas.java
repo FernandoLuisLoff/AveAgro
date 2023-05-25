@@ -59,11 +59,11 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
 
         jComboBoxLotes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Lote", "Lote Teste" }));
 
-        jLabelLote.setText("Lote ");
+        jLabelLote.setText("Lote * ");
 
-        jLabelDescricaoMotivo.setText("Descrição/Motivo");
+        jLabelDescricaoMotivo.setText("Descrição/Motivo *");
 
-        jLabelContagemPerdas.setText("Contagem de Perdas");
+        jLabelContagemPerdas.setText("Contagem de Perdas *");
 
         jFormattedTextFieldContagemPerdas.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0"))));
 
@@ -83,7 +83,7 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelDataContagem.setText("Data da Contagem");
+        jLabelDataContagem.setText("Data da Contagem *");
         jLabelDataContagem.setToolTipText("");
 
         jFormattedTextFieldDataContagem.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));

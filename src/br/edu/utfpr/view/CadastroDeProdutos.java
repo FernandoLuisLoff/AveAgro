@@ -74,15 +74,15 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabelProduto.setText("Produto");
+        jLabelProduto.setText("Produto *");
 
-        jLabelCategoria.setText("Categoria");
+        jLabelCategoria.setText("Categoria *");
 
-        jLabelQuantidadeVolume.setText("Quantidade/Volume");
+        jLabelQuantidadeVolume.setText("Quantidade/Volume *");
 
-        jLabelUnidadeMedida.setText("Unidade de Medida");
+        jLabelUnidadeMedida.setText("Unidade de Medida *");
 
-        jLabelValor.setText("Valor");
+        jLabelValor.setText("Valor *");
 
         jFormattedTextFieldQuantidadeVolume.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
@@ -112,11 +112,11 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
                             .addGroup(jPanelAdicionarProdutoAba1Layout.createSequentialGroup()
                                 .addComponent(jLabelQuantidadeVolume)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFieldQuantidadeVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)))
+                                .addComponent(jFormattedTextFieldQuantidadeVolume, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelAdicionarProdutoAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelAdicionarProdutoAba1Layout.createSequentialGroup()
-                                .addGap(0, 30, Short.MAX_VALUE)
+                                .addGap(0, 27, Short.MAX_VALUE)
                                 .addComponent(jButtonFecharAba1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonSalvar))

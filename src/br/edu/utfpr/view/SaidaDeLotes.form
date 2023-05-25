@@ -67,7 +67,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace min="0" pref="220" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="213" max="32767" attributes="0"/>
                                       <Component id="jButtonFecharAba1" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jButtonSalvar" min="-2" max="-2" attributes="0"/>
@@ -156,12 +156,12 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelLote">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lote "/>
+                <Property name="text" type="java.lang.String" value="Lote * "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelValorSaida">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Valor de Sa&#xed;da do Lote"/>
+                <Property name="text" type="java.lang.String" value="Valor de Sa&#xed;da do Lote *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldValorSaida">
@@ -173,7 +173,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelDataSaida">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Data da Sa&#xed;da"/>
+                <Property name="text" type="java.lang.String" value="Data da Sa&#xed;da *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldDataSaida">
