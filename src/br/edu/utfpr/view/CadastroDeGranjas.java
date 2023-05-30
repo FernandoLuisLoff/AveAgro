@@ -5,7 +5,7 @@
 package br.edu.utfpr.view;
 
 import br.edu.utfpr.funcoes.Mensagens;
-import br.edu.utfpr.classes.Granjas;
+import br.edu.utfpr.entidades.Granjas;
 
 /**
  *

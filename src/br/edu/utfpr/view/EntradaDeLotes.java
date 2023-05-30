@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.EntradaLotes;
+import br.edu.utfpr.entidades.EntradaLotes;
 import br.edu.utfpr.funcoes.Mensagens;
 import javax.swing.JOptionPane;
 

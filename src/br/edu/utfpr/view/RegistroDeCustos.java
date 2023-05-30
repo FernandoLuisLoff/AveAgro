@@ -1,6 +1,6 @@
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.classes.Custos;
+import br.edu.utfpr.entidades.Custos;
 import br.edu.utfpr.funcoes.Mensagens;
 
 /*

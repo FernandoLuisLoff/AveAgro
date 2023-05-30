@@ -5,7 +5,7 @@
 package br.edu.utfpr.view;
 
 import br.edu.utfpr.funcoes.Mensagens;
-import br.edu.utfpr.classes.Propriedades;
+import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.funcoes.Cep;
 
 /**
