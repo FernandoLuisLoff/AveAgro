@@ -11,13 +11,13 @@ import java.sql.*;
  *
  * @author ferlo
  */
-public class ConexaoDAO {
+public class ConexaoDao {
     Connection conexao;
-    private static ConexaoDAO instancia = null;
+    private static ConexaoDao instancia = null;
     
     private Logger logger = Logger.getLogger("ConexaoDao");
     
-    public ConexaoDAO() {
+    public ConexaoDao() {
         try {
             String url = "jdbc:postgresql://localhost:5432/AveAgro";
             String usuario = "postgres";
@@ -30,9 +30,9 @@ public class ConexaoDAO {
         }
     }
     
-    private static ConexaoDAO getInstance() {
+    static ConexaoDao getInstance() {
         if (instancia == null) {
-            instancia = new ConexaoDAO();
+            instancia = new ConexaoDao();
         }
         return instancia;
     }

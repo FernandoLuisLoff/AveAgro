@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.DAO.ConexaoDAO;
+import br.edu.utfpr.DAO.ConexaoDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.awt.Image; 
 import java.awt.Graphics; 
@@ -23,8 +23,6 @@ public class FormularioPrincipal extends javax.swing.JFrame {
     public FormularioPrincipal() {
         initComponents();
         super.setExtendedState(FormularioPrincipal.MAXIMIZED_BOTH);
-        
-        ConexaoDAO conexao = new ConexaoDAO();
     }
 
     /**

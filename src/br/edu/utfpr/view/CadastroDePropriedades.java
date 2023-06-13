@@ -4,21 +4,30 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.PropriedadesDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.funcoes.Cep;
+import br.edu.utfpr.model.PropriedadesListModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ferlo
  */
 public class CadastroDePropriedades extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form Propriedade
-     */
+    List<Propriedades> listaPropriedades = new ArrayList<Propriedades>();
+    PropriedadesListModel propriedadesModel = new PropriedadesListModel(listaPropriedades);
+    
+    PropriedadesDao propriedadesDao = new PropriedadesDao();
+    PropriedadesListModel propriedadesListModel;
+    
     public CadastroDePropriedades() {
         initComponents();
+        List<Propriedades> lista = propriedadesDao.listar();
+        propriedadesListModel = new PropriedadesListModel(lista);
+        jTablePropriedadesCadastradas.setModel(propriedadesListModel);
     }
 
     /**
@@ -214,21 +223,28 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
 
         jTablePropriedadesCadastradas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nome da Propriedade", "Data de Aquisição ", "CEP", "Estado", "Cidade", "Endereço", "Número", "Complemento"
+                "Código", "Nome da Propriedade", "Data de Aquisição ", "CEP", "Estado", "Cidade", "Endereço", "Número", "Complemento"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPanelPropriedadesCadastradas.setViewportView(jTablePropriedadesCadastradas);
@@ -238,6 +254,11 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jLabelNomePropriedadePesquisa.setText("Nome da Propriedade");
 
@@ -334,7 +355,8 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
                 jTextFieldComplemento.getText()
             );
             
-            propriedades.salvar();
+            propriedadesModel.insertModel(propriedades);
+            jTablePropriedadesCadastradas.setModel(propriedadesModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
@@ -358,6 +380,11 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             jTextFieldEndereco.setText(cep.getLogradouro());
         }
     }//GEN-LAST:event_jFormattedTextFieldCEPFocusLost
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int linha = jTablePropriedadesCadastradas.getSelectedRow();
+        propriedadesModel.removeModel(linha);
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jTextFieldNomePropriedade.setText("");
@@ -410,7 +437,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             return true;
         }
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEditar;
     private javax.swing.JButton jButtonExcluir;

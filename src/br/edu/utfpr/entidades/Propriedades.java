@@ -81,11 +81,11 @@ public class Propriedades {
         this.estado = estado;
     }
     
-    public String getEnderedo() {
+    public String getEndereco() {
         return enderedo;
     }
 
-    public void setEnderedo(String enderedo) {
+    public void setEndereco(String enderedo) {
         this.enderedo = enderedo;
     }
     
@@ -107,5 +107,9 @@ public class Propriedades {
     
     public void salvar() { 
             
+    }
+
+    public Integer getInt(String tbpropriedades_codigo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
