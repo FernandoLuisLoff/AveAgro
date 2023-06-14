@@ -108,8 +108,4 @@ public class Propriedades {
     public void salvar() { 
             
     }
-
-    public Integer getInt(String tbpropriedades_codigo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

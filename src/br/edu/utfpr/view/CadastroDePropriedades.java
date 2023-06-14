@@ -362,7 +362,9 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<Propriedades> lista = propriedadesDao.buscarPorNome(jTextFieldNomePropriedadePesquisar.getText());
+        propriedadesListModel = new PropriedadesListModel(lista);
+        jTablePropriedadesCadastradas.setModel(propriedadesListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jFormattedTextFieldCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPFocusLost

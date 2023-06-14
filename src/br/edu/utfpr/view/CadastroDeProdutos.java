@@ -4,20 +4,29 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.ProdutosDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Produtos;
+import br.edu.utfpr.model.ProdutosListModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ferlo
  */
 public class CadastroDeProdutos extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form CadastroDeProdutos
-     */
+    List<Produtos> listaProdutos = new ArrayList<Produtos>();
+    ProdutosListModel produtosModel = new ProdutosListModel(listaProdutos);
+    
+    ProdutosDao produtosDao = new ProdutosDao();
+    ProdutosListModel produtosListModel;
+    
     public CadastroDeProdutos() {
         initComponents();
+        List<Produtos> lista = produtosDao.listar();
+        produtosListModel = new ProdutosListModel(lista);
+        jTableProdutos.setModel(produtosListModel);
     }
 
     /**
@@ -282,13 +291,16 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
                 Float.parseFloat(jFormattedTextFieldValor.getText().toString().replace(".", "").replace(",", "."))
             );
             
-            produtos.salvar();
+            produtosModel.insertModel(produtos);
+            jTableProdutos.setModel(produtosModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<Produtos> lista = produtosDao.buscarPorNome(jTextFieldProdutoPesquisar.getText());
+        produtosListModel = new ProdutosListModel(lista);
+        jTableProdutos.setModel(produtosListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void limpaCampos() {

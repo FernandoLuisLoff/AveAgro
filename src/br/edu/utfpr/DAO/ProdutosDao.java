@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.DAO;
 
-import br.edu.utfpr.entidades.Propriedades;
+import br.edu.utfpr.entidades.Produtos;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,33 +18,33 @@ import java.util.logging.Logger;
  *
  * @author ferlo
  */
-public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
+public class ProdutosDao extends AbstractDaoImpl<Produtos>{
     Mensagens mensagem = new Mensagens();
     private Connection connection;
     private Logger logger = Logger.getLogger("ProdutoDao");
     ResultSet rs;
     PreparedStatement stmt;
 
-    public PropriedadesDao(){
+    public ProdutosDao(){
         connection = ConexaoDao.getInstance().getConexao();
     }
     
     @Override
     protected String getNomeTabela() {
-        return "tbpropriedades";
+        return "tbprodutos";
     }
     
     @Override
-    public List<Propriedades> listar(){
+    public List<Produtos> listar(){
         String sql = "SELECT * FROM " + getNomeTabela();
-        List<Propriedades> retorno = new ArrayList<>();
+        List<Produtos> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             logger.info(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Propriedades propriedade = mapResultSetToEntity(rs);
-                retorno.add(propriedade);
+                Produtos produtos = mapResultSetToEntity(rs);
+                retorno.add(produtos);
             }
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
@@ -53,38 +53,34 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
     }
 
     @Override
-    protected Propriedades mapResultSetToEntity(ResultSet rs) {
+    protected Produtos mapResultSetToEntity(ResultSet rs) {
         try{
-            Propriedades propriedades = new Propriedades(
-                rs.getString("tbpropriedades_nome_propriedade"),
-                rs.getString("tbpropriedades_data_aquisicao"),
-                rs.getString("tbpropriedades_cep"),
-                rs.getString("tbpropriedades_cidade"),
-                rs.getString("tbpropriedades_estado"),
-                rs.getString("tbpropriedades_bairro"),
-                rs.getString("tbpropriedades_endereco"),
-                rs.getString("tbpropriedades_numero"),
-                rs.getString("tbpropriedades_complemento")
+            Produtos produtos = new Produtos(
+                rs.getString("tbprodutos_produto"),
+                rs.getString("tbprodutos_categoria"),
+                rs.getFloat("tbprodutos_qtd_vol"),
+                rs.getString("tbprodutos_un_medida"),
+                rs.getFloat("tbprodutos_valor")
             );
-            propriedades.setIdPropriedades(rs.getInt("tbpropriedades_codigo"));
-            return propriedades;
+            produtos.setIdProdutos(rs.getInt("tbprodutos_codigo"));
+            return produtos;
         }catch (SQLException ex) {
-            mensagem.errorMessage("Erro", "Erro ao criar propriedade: " + ex.getMessage());
+            mensagem.errorMessage("Erro", "Erro ao criar produto: " + ex.getMessage());
             return null;
         }
     }
 
     @Override
-    protected List<Propriedades> buscarPorCodigo(int codigo) {
-        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbpropriedades_codigo = ?";
-        List<Propriedades> retorno = new ArrayList<>();
+    protected List<Produtos> buscarPorCodigo(int codigo) {
+        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbprodutos_codigo = ?";
+        List<Produtos> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setInt(1, codigo); //garante a busca
             rs = stmt.executeQuery();
             while (rs.next()) {
-               Propriedades propriedades = mapResultSetToEntity(rs);
-               retorno.add(propriedades);
+               Produtos produtos = mapResultSetToEntity(rs);
+               retorno.add(produtos);
             }
             stmt.close();
             rs.close();
@@ -94,16 +90,16 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
         return retorno;
     }
     
-    public List<Propriedades> buscarPorNome(String nome) {
-        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbpropriedades_nome_propriedade LIKE ?";
-        List<Propriedades> retorno = new ArrayList<>();
+    public List<Produtos> buscarPorNome(String nome) {
+        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbprodutos_produto LIKE ?";
+        List<Produtos> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, "%" + nome + "%"); //garante a busca da string com começo.
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Propriedades propriedades = mapResultSetToEntity(rs);
-                retorno.add(propriedades);
+                Produtos produtos = mapResultSetToEntity(rs);
+                retorno.add(produtos);
             }
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());

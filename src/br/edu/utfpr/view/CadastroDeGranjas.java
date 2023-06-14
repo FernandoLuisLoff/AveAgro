@@ -4,20 +4,44 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.GranjasDao;
+import br.edu.utfpr.DAO.PropriedadesDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Granjas;
+import br.edu.utfpr.entidades.Propriedades;
+import br.edu.utfpr.model.GranjasListModel;
+import br.edu.utfpr.model.PropriedadesListModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
  * @author ferlo
  */
 public class CadastroDeGranjas extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form CadastroDeGranjas
-     */
+    // Guarda os codigos das propriedades do combobox
+    Integer[] codigosPropriedades;
+    
+    // Conexão com banco
+    PropriedadesDao propriedadesDao = new PropriedadesDao();
+    PropriedadesListModel propriedadesListModel;
+    
+    // ListModel Granjas
+    List<Granjas> listaGranjas = new ArrayList<Granjas>();
+    GranjasListModel granjasModel = new GranjasListModel(listaGranjas);
+    
+    // Conexão com banco
+    GranjasDao granjasDao = new GranjasDao();
+    GranjasListModel granjasListModel;
+    
     public CadastroDeGranjas() {
         initComponents();
+        List<Granjas> lista = granjasDao.listar();
+        granjasListModel = new GranjasListModel(lista);
+        jTableGranjas.setModel(granjasListModel);
+        
+        alimentaComboBoxPropriedades();
     }
 
     /**
@@ -73,7 +97,7 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         jLabelIdentificadorPropriedade.setText("Propriedade *");
         jLabelIdentificadorPropriedade.setName(""); // NOI18N
 
-        jComboBoxPropriedade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione a Propriedade", "Propriedade Teste" }));
+        jComboBoxPropriedade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione a Propriedade" }));
 
         jLabelIdentificadorDataIniAtividades.setText("Data de Início das Atividades * ");
         jLabelIdentificadorDataIniAtividades.setName(""); // NOI18N
@@ -183,9 +207,16 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPaneGranjas.setViewportView(jTableGranjas);
@@ -269,6 +300,32 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void alimentaComboBoxPropriedades() {
+        
+        List<Propriedades> listaPropriedade = propriedadesDao.listar();
+        propriedadesListModel = new PropriedadesListModel(listaPropriedade);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesPropriedades = new String[propriedadesListModel.getRowCount()+1];
+        
+        codigosPropriedades = new Integer[propriedadesListModel.getRowCount()];
+        
+        for (int i=0; i<=propriedadesListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesPropriedades[i] = "Selecione a Propriedade";
+            } else {
+                nomesPropriedades[i] = propriedadesListModel.getValueAt(i-1, 1).toString();
+                codigosPropriedades[i-1] = Integer.parseInt(propriedadesListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesPropriedades);
+
+        // Define o modelo de dados
+        jComboBoxPropriedade.setModel(model);
+    }
+            
     private void jButtonFecharAba1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba1ActionPerformed
         super.dispose();
     }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
@@ -278,23 +335,25 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        
-        
         if (validaCampos()) {
             Granjas granjas = new Granjas(
                 jTextFieldIdentificador.getText(),
                 jComboBoxPropriedade.getSelectedIndex(),
+                jComboBoxPropriedade.getSelectedItem().toString(),
                 jFormattedTextFieldDataIniAtividades.getText().toString(),
                 Integer.parseInt(jFormattedTextFieldQuantidadeFrangosSuportadas.getText().toString().replace(".", ""))
             );
             
-            granjas.salvar();
+            granjasModel.insertModel(granjas);
+            jTableGranjas.setModel(granjasModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<Granjas> lista = granjasDao.buscarPorNome(jTextFieldIdentificadorGranjaPesquisar.getText());
+        granjasListModel = new GranjasListModel(lista);
+        jTableGranjas.setModel(granjasListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void limpaCampos() {

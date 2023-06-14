@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.DAO;
 
-import br.edu.utfpr.entidades.Propriedades;
+import br.edu.utfpr.entidades.Granjas;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,33 +18,34 @@ import java.util.logging.Logger;
  *
  * @author ferlo
  */
-public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
+public class GranjasDao extends AbstractDaoImpl<Granjas>{
     Mensagens mensagem = new Mensagens();
     private Connection connection;
     private Logger logger = Logger.getLogger("ProdutoDao");
     ResultSet rs;
     PreparedStatement stmt;
 
-    public PropriedadesDao(){
+    public GranjasDao(){
         connection = ConexaoDao.getInstance().getConexao();
     }
     
     @Override
     protected String getNomeTabela() {
-        return "tbpropriedades";
+        return "tbgranjas";
     }
     
     @Override
-    public List<Propriedades> listar(){
+    public List<Granjas> listar(){
         String sql = "SELECT * FROM " + getNomeTabela();
-        List<Propriedades> retorno = new ArrayList<>();
+        sql += " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)";
+        List<Granjas> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             logger.info(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Propriedades propriedade = mapResultSetToEntity(rs);
-                retorno.add(propriedade);
+                Granjas granjas = mapResultSetToEntity(rs);
+                retorno.add(granjas);
             }
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
@@ -53,38 +54,36 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
     }
 
     @Override
-    protected Propriedades mapResultSetToEntity(ResultSet rs) {
+    protected Granjas mapResultSetToEntity(ResultSet rs) {
         try{
-            Propriedades propriedades = new Propriedades(
+            Granjas granjas = new Granjas(
+                rs.getString("tbgranjas_identificador"),
+                rs.getInt("tbgranjas_propriedade"),
                 rs.getString("tbpropriedades_nome_propriedade"),
-                rs.getString("tbpropriedades_data_aquisicao"),
-                rs.getString("tbpropriedades_cep"),
-                rs.getString("tbpropriedades_cidade"),
-                rs.getString("tbpropriedades_estado"),
-                rs.getString("tbpropriedades_bairro"),
-                rs.getString("tbpropriedades_endereco"),
-                rs.getString("tbpropriedades_numero"),
-                rs.getString("tbpropriedades_complemento")
+                rs.getString("tbgranjas_data_ini_atvs"),
+                rs.getInt("tbgranjas_qtd_frangos_suportada")
             );
-            propriedades.setIdPropriedades(rs.getInt("tbpropriedades_codigo"));
-            return propriedades;
+            granjas.setIdGranja(rs.getInt("tbgranjas_codigo"));
+            return granjas;
         }catch (SQLException ex) {
-            mensagem.errorMessage("Erro", "Erro ao criar propriedade: " + ex.getMessage());
+            mensagem.errorMessage("Erro", "Erro ao criar granja: " + ex.getMessage());
             return null;
         }
     }
 
     @Override
-    protected List<Propriedades> buscarPorCodigo(int codigo) {
-        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbpropriedades_codigo = ?";
-        List<Propriedades> retorno = new ArrayList<>();
+    protected List<Granjas> buscarPorCodigo(int codigo) {
+        String sql = "SELECT * FROM "+getNomeTabela();
+        sql += " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)";
+        sql += " WHERE tbgranjas_codigo = ?";
+        List<Granjas> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setInt(1, codigo); //garante a busca
             rs = stmt.executeQuery();
             while (rs.next()) {
-               Propriedades propriedades = mapResultSetToEntity(rs);
-               retorno.add(propriedades);
+               Granjas granjas = mapResultSetToEntity(rs);
+               retorno.add(granjas);
             }
             stmt.close();
             rs.close();
@@ -94,16 +93,18 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
         return retorno;
     }
     
-    public List<Propriedades> buscarPorNome(String nome) {
-        String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbpropriedades_nome_propriedade LIKE ?";
-        List<Propriedades> retorno = new ArrayList<>();
+    public List<Granjas> buscarPorNome(String nome) {
+        String sql = "SELECT * FROM "+getNomeTabela();
+        sql += " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)";
+        sql += " WHERE tbgranjas_identificador LIKE ?";
+        List<Granjas> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, "%" + nome + "%"); //garante a busca da string com começo.
             rs = stmt.executeQuery();
             while (rs.next()) {
-                Propriedades propriedades = mapResultSetToEntity(rs);
-                retorno.add(propriedades);
+                Granjas granjas = mapResultSetToEntity(rs);
+                retorno.add(granjas);
             }
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());

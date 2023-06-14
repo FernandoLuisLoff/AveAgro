@@ -9,14 +9,17 @@ package br.edu.utfpr.entidades;
  * @author ferlo
  */
 public class Granjas {
+    // Variaveis Granja
     Integer idGranja;
     String identificador;
-    Integer propriedade;
+    Integer codPropriedade;
+    String propriedade;
     String dataIniAtividades;
     Integer quantidadeFrangosSuportada;
     
-    public Granjas(String identificador, Integer propriedade, String dataIniAtividades, Integer quantidadeFrangosSuportada) {
+    public Granjas(String identificador, Integer codPropriedade, String propriedade, String dataIniAtividades, Integer quantidadeFrangosSuportada) {
         this.identificador = identificador;
+        this.codPropriedade = codPropriedade;
         this.propriedade = propriedade;
         this.dataIniAtividades = dataIniAtividades;
         this.quantidadeFrangosSuportada = quantidadeFrangosSuportada;
@@ -38,11 +41,19 @@ public class Granjas {
         this.identificador = identificador;
     }
     
-    public Integer getPropriedade() {
+    public Integer getCodPropriedade() {
+        return codPropriedade;
+    }
+    
+    public void setCodPropriedade(Integer codPropriedade) {
+        this.codPropriedade = codPropriedade;
+    }
+    
+    public String getPropriedade() {
         return propriedade;
     }
 
-    public void setPropriedade(Integer identificador) {
+    public void setPropriedade(String propriedade) {
         this.propriedade = propriedade;
     }
     
