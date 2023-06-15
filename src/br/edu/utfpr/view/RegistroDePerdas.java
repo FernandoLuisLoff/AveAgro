@@ -1,7 +1,15 @@
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.EntradaLotesDao;
+import br.edu.utfpr.DAO.PerdasDao;
+import br.edu.utfpr.entidades.EntradaLotes;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Perdas;
+import br.edu.utfpr.model.EntradaDeLotesListModel;
+import br.edu.utfpr.model.PerdasListModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -14,13 +22,55 @@ import br.edu.utfpr.entidades.Perdas;
  */
 public class RegistroDePerdas extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Perdas
-     */
+    // Guarda os codigos dos lotes do combobox
+    Integer[] codigosLotes;
+    
+    // Conexão com banco
+    EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
+    EntradaDeLotesListModel entradaLotesListModel;
+    
+    // ListModel Perdas
+    List<Perdas> listaPerdas = new ArrayList<Perdas>();
+    PerdasListModel perdasModel = new PerdasListModel(listaPerdas);
+    
+    // Conexão com banco
+    PerdasDao perdasDao = new PerdasDao();
+    PerdasListModel perdasListModel;
+    
     public RegistroDePerdas() {
         initComponents();
+        List<Perdas> lista = perdasDao.listar();
+        perdasListModel = new PerdasListModel(lista);
+        jTableRegistroPerda.setModel(perdasListModel);
+        
+        alimentaComboBoxLotes();
     }
 
+    private void alimentaComboBoxLotes() {
+        
+        List<EntradaLotes> listaEntradaLotes = entradaLotesDao.listar();
+        entradaLotesListModel = new EntradaDeLotesListModel(listaEntradaLotes);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesLotes = new String[entradaLotesListModel.getRowCount()+1];
+        
+        codigosLotes = new Integer[entradaLotesListModel.getRowCount()];
+        
+        for (int i=0; i<=entradaLotesListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesLotes[i] = "Selecione o Lote";
+            } else {
+                nomesLotes[i] = entradaLotesListModel.getValueAt(i-1, 1).toString();
+                codigosLotes[i-1] = Integer.parseInt(entradaLotesListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesLotes);
+
+        // Define o modelo de dados
+        jComboBoxLotes.setModel(model);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -262,12 +312,14 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
         if (validaCampos()) {
             Perdas perdas = new Perdas(
                 jComboBoxLotes.getSelectedIndex(),
+                jComboBoxLotes.getSelectedItem().toString(),
                 jTextFieldDescricaoMotivo.getText(),
                 Integer.parseInt(jFormattedTextFieldContagemPerdas.getText().toString().replace(".", "")),
                 jFormattedTextFieldDataContagem.getText().toString()
             );
             
-            perdas.salvar();
+            perdasModel.insertModel(perdas);
+            jTableRegistroPerda.setModel(perdasModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
@@ -277,7 +329,9 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<Perdas> lista = perdasDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
+        perdasListModel = new PerdasListModel(lista);
+        jTableRegistroPerda.setModel(perdasListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void limpaCampos() {

@@ -10,11 +10,13 @@ package br.edu.utfpr.entidades;
  */
 public class SaidaLotes {
     Integer idSaidaLote;
-    Integer lote;
+    Integer codLote;
+    String lote;
     Float valorSaidaLote;
     String dataSaida;
     
-    public SaidaLotes(Integer lote, Float valorSaidaLote, String dataSaida) {
+    public SaidaLotes(Integer codLote, String lote, Float valorSaidaLote, String dataSaida) {
+        this.codLote = codLote;
         this.lote = lote;
         this.valorSaidaLote = valorSaidaLote;
         this.dataSaida = dataSaida;
@@ -28,11 +30,19 @@ public class SaidaLotes {
         this.idSaidaLote = idSaidaLote;
     }
     
-    public Integer getLote() {
+    public Integer getCodLote() {
+        return codLote;
+    }
+
+    public void setCodLote(Integer codLote) {
+        this.codLote = codLote;
+    }
+    
+    public String getLote() {
         return lote;
     }
 
-    public void setLote(Integer lote) {
+    public void setLote(String lote) {
         this.lote = lote;
     }
     

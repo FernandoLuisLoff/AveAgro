@@ -4,21 +4,45 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.EntradaLotesDao;
+import br.edu.utfpr.DAO.GranjasDao;
 import br.edu.utfpr.entidades.EntradaLotes;
+import br.edu.utfpr.entidades.Granjas;
 import br.edu.utfpr.funcoes.Mensagens;
-import javax.swing.JOptionPane;
+import br.edu.utfpr.model.EntradaDeLotesListModel;
+import br.edu.utfpr.model.GranjasListModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
  * @author ferlo
  */
 public class EntradaDeLotes extends javax.swing.JInternalFrame {
+    
+    // Guarda os codigos das granjas do combobox
+    Integer[] codigosGranjas;
+    
+    // Conexão com banco
+    GranjasDao granjasDao = new GranjasDao();
+    GranjasListModel granjasListModel;
 
-    /**
-     * Creates new form EntradaDeLotes
-     */
+    // ListModel EntradaDeLotes
+    List<EntradaLotes> listaEntradaDeLotes = new ArrayList<EntradaLotes>();
+    EntradaDeLotesListModel entradaDeLotesModel = new EntradaDeLotesListModel(listaEntradaDeLotes);
+    
+    // Conexão com banco
+    EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
+    EntradaDeLotesListModel entradaLotesListModel;
+    
     public EntradaDeLotes() {
         initComponents();
+        List<EntradaLotes> lista = entradaLotesDao.listar();
+        entradaLotesListModel = new EntradaDeLotesListModel(lista);
+        jTableEntradaLote.setModel(entradaLotesListModel);
+        
+        alimentaComboBoxGranjas();
     }
 
     /**
@@ -280,18 +304,48 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
             EntradaLotes entradaLotes = new EntradaLotes(
                 jTextFieldIdentificador.getText(),
                 jComboBoxGranjas.getSelectedIndex(),
+                jComboBoxGranjas.getSelectedItem().toString(),
                 Integer.parseInt(jFormattedTextFieldQuantidadeFrangos.getText().toString().replace(".", "")),
                 Float.parseFloat(jFormattedTextFieldValorEntrada.getText().toString().replace(".", "").replace(",", ".")),
                 jFormattedTextFieldDataEntrada.getText().toString()
             );
 
-            entradaLotes.salvar();
+            entradaDeLotesModel.insertModel(entradaLotes);
+            jTableEntradaLote.setModel(entradaDeLotesModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
+    private void alimentaComboBoxGranjas() {
+        
+        List<Granjas> listaGranjas = granjasDao.listar();
+        granjasListModel = new GranjasListModel(listaGranjas);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesGranjas = new String[granjasListModel.getRowCount()+1];
+        
+        codigosGranjas = new Integer[granjasListModel.getRowCount()];
+        
+        for (int i=0; i<=granjasListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesGranjas[i] = "Selecione a Granja";
+            } else {
+                nomesGranjas[i] = granjasListModel.getValueAt(i-1, 1).toString();
+                codigosGranjas[i-1] = Integer.parseInt(granjasListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesGranjas);
+
+        // Define o modelo de dados
+        jComboBoxGranjas.setModel(model);
+    }
+    
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<EntradaLotes> lista = entradaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
+        entradaLotesListModel = new EntradaDeLotesListModel(lista);
+        jTableEntradaLote.setModel(entradaLotesListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void limpaCampos() {

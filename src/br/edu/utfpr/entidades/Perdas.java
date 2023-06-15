@@ -10,12 +10,14 @@ package br.edu.utfpr.entidades;
  */
 public class Perdas {
     Integer idRegistroPerdas;
-    Integer lote;
+    Integer codLote;
+    String lote;
     String descricaoMotivo;
     Integer contagemPerdas;
     String dataContagem;
     
-    public Perdas(Integer lote, String descricaoMotivo, Integer contagemPerdas, String dataContagem) {
+    public Perdas(Integer codLote, String lote, String descricaoMotivo, Integer contagemPerdas, String dataContagem) {
+        this.codLote = codLote;
         this.lote = lote;
         this.descricaoMotivo = descricaoMotivo;
         this.contagemPerdas = contagemPerdas;
@@ -30,11 +32,19 @@ public class Perdas {
         this.idRegistroPerdas = idRegistroPerdas;
     }
     
-    public Integer getLote() {
+    public Integer getCodLote() {
+        return codLote;
+    }
+
+    public void setCodLote(Integer codLote) {
+        this.codLote = codLote;
+    }
+    
+    public String getLote() {
         return lote;
     }
 
-    public void setLote(Integer lote) {
+    public void setLote(String lote) {
         this.lote = lote;
     }
     

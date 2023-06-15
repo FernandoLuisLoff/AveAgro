@@ -13,14 +13,16 @@ import javax.swing.JOptionPane;
 public class EntradaLotes {
     Integer idLote;
     String identificador;
-    Integer granja;
+    Integer codGranja;
+    String granja;
     Integer quantidadeFrangos;
     Float valorEntradaLote;
     String dataEntrada;
     
-    public EntradaLotes(String identificador, Integer granja, Integer quantidadeFrangos,
+    public EntradaLotes(String identificador, Integer codGranja, String granja, Integer quantidadeFrangos,
     Float valorEntradaLote, String dataEntrada) {
         this.identificador = identificador;
+        this.codGranja = codGranja;
         this.granja = granja;
         this.quantidadeFrangos = quantidadeFrangos;
         this.valorEntradaLote = valorEntradaLote;
@@ -43,11 +45,19 @@ public class EntradaLotes {
         this.identificador = identificador;
     }
     
-    public Integer getGranja() {
+    public Integer getCodGranja() {
+        return codGranja;
+    }
+
+    public void setCodGranja(Integer granja) {
+        this.codGranja = codGranja;
+    }
+    
+    public String getGranja() {
         return granja;
     }
 
-    public void setGranja(Integer granja) {
+    public void setGranja(String granja) {
         this.granja = granja;
     }
     

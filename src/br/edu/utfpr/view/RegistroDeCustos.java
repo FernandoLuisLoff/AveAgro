@@ -1,7 +1,18 @@
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.CustosDao;
+import br.edu.utfpr.DAO.EntradaLotesDao;
+import br.edu.utfpr.DAO.ProdutosDao;
 import br.edu.utfpr.entidades.Custos;
+import br.edu.utfpr.entidades.EntradaLotes;
+import br.edu.utfpr.entidades.Produtos;
 import br.edu.utfpr.funcoes.Mensagens;
+import br.edu.utfpr.model.CustosListModel;
+import br.edu.utfpr.model.EntradaDeLotesListModel;
+import br.edu.utfpr.model.ProdutosListModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,12 +24,88 @@ import br.edu.utfpr.funcoes.Mensagens;
  * @author ferlo
  */
 public class RegistroDeCustos extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form RegistroDeCustos
-     */
+    // Guarda os codigos dos lotes do combobox
+    Integer[] codigosLotes;
+    
+    // Guarda os codigos dos produtos do combobox
+    Integer[] codigosProdutos;
+    
+    // Conexão com banco
+    ProdutosDao produtosDao = new ProdutosDao();
+    ProdutosListModel produtosListModel;
+    
+    // Conexão com banco
+    EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
+    EntradaDeLotesListModel entradaLotesListModel;
+    
+    // ListModel Perdas
+    List<Custos> listaCustos = new ArrayList<Custos>();
+    CustosListModel custosModel = new CustosListModel(listaCustos);
+    
+    // Conexão com banco
+    CustosDao custosDao = new CustosDao();
+    CustosListModel custosListModel;
+    
     public RegistroDeCustos() {
         initComponents();
+        List<Custos> lista = custosDao.listar();
+        custosListModel = new CustosListModel(lista);
+        jTableRegistroCusto.setModel(custosListModel);
+        
+        alimentaComboBoxLotes();
+        alimentaComboBoxProdutos();
+    }
+    
+    private void alimentaComboBoxLotes() {
+        
+        List<EntradaLotes> listaEntradaLotes = entradaLotesDao.listar();
+        entradaLotesListModel = new EntradaDeLotesListModel(listaEntradaLotes);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesLotes = new String[entradaLotesListModel.getRowCount()+1];
+        
+        codigosLotes = new Integer[entradaLotesListModel.getRowCount()];
+        
+        for (int i=0; i<=entradaLotesListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesLotes[i] = "Selecione o Lote";
+            } else {
+                nomesLotes[i] = entradaLotesListModel.getValueAt(i-1, 1).toString();
+                codigosLotes[i-1] = Integer.parseInt(entradaLotesListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesLotes);
+
+        // Define o modelo de dados
+        jComboBoxLotes.setModel(model);
+    }
+    
+    private void alimentaComboBoxProdutos() {
+        
+        List<Produtos> listaProdutos = produtosDao.listar();
+        produtosListModel = new ProdutosListModel(listaProdutos);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesProdutos = new String[produtosListModel.getRowCount()+1];
+        
+        codigosProdutos = new Integer[produtosListModel.getRowCount()];
+        
+        for (int i=0; i<=produtosListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesProdutos[i] = "Selecione o Produto";
+            } else {
+                nomesProdutos[i] = produtosListModel.getValueAt(i-1, 1).toString();
+                codigosProdutos[i-1] = Integer.parseInt(produtosListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesProdutos);
+
+        // Define o modelo de dados
+        jComboBoxProduto.setModel(model);
     }
 
     /**
@@ -285,21 +372,26 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<Custos> lista = custosDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
+        custosListModel = new CustosListModel(lista);
+        jTableRegistroCusto.setModel(custosListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (validaCampos()) {
             Custos custos = new Custos(
                 jComboBoxLotes.getSelectedIndex(),
+                jComboBoxLotes.getSelectedItem().toString(),
                 jComboBoxProduto.getSelectedIndex(),
+                jComboBoxProduto.getSelectedItem().toString(),
                 Float.parseFloat(jFormattedTextFieldQuantidade.getText().toString().replace(".", "").replace(",", ".")),
                 Float.parseFloat(jFormattedTextFieldValor.getText().toString().replace(".", "").replace(",", ".")),
                 jTextFieldDescricaoMotivo.getText(),
                 jFormattedTextFieldData.getText().toString()
             );
 
-            custos.salvar();
+            custosModel.insertModel(custos);
+            jTableRegistroCusto.setModel(custosModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed

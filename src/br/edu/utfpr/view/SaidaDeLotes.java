@@ -4,8 +4,16 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.EntradaLotesDao;
+import br.edu.utfpr.DAO.SaidaLotesDao;
+import br.edu.utfpr.entidades.EntradaLotes;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.SaidaLotes;
+import br.edu.utfpr.model.EntradaDeLotesListModel;
+import br.edu.utfpr.model.SaidaLotesListModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -13,11 +21,28 @@ import br.edu.utfpr.entidades.SaidaLotes;
  */
 public class SaidaDeLotes extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form SaidaDeLotes
-     */
+    // Guarda os codigos dos lotes do combobox
+    Integer[] codigosLotes;
+    
+    // Conexão com banco
+    EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
+    EntradaDeLotesListModel entradaLotesListModel;
+    
+    // ListModel SaidaLotes
+    List<SaidaLotes> listaSaidaLotes = new ArrayList<SaidaLotes>();
+    SaidaLotesListModel saidaLotesListModel = new SaidaLotesListModel(listaSaidaLotes);
+    
+    // Conexão com banco
+    SaidaLotesDao saidaLotesDao = new SaidaLotesDao();
+    SaidaLotesListModel saidaDeLotesListModel;
+    
     public SaidaDeLotes() {
         initComponents();
+        List<SaidaLotes> lista = saidaLotesDao.listar();
+        saidaDeLotesListModel = new SaidaLotesListModel(lista);
+        jTableSaidaLote.setModel(saidaDeLotesListModel);
+        
+        alimentaComboBoxLotes();
     }
 
     /**
@@ -233,6 +258,32 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void alimentaComboBoxLotes() {
+        
+        List<EntradaLotes> listaEntradaLotes = entradaLotesDao.listar();
+        entradaLotesListModel = new EntradaDeLotesListModel(listaEntradaLotes);
+        
+        // Cria um array com os itens para a ComboBox
+        String[] nomesLotes = new String[entradaLotesListModel.getRowCount()+1];
+        
+        codigosLotes = new Integer[entradaLotesListModel.getRowCount()];
+        
+        for (int i=0; i<=entradaLotesListModel.getRowCount(); i++) {
+            if (i==0) {
+                nomesLotes[i] = "Selecione o Lote";
+            } else {
+                nomesLotes[i] = entradaLotesListModel.getValueAt(i-1, 1).toString();
+                codigosLotes[i-1] = Integer.parseInt(entradaLotesListModel.getValueAt(i-1, 0).toString());
+            }
+        }
+        
+        // Cria um modelo de dados para a ComboBox
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nomesLotes);
+
+        // Define o modelo de dados
+        jComboBoxLotes.setModel(model);
+    }
+    
     private void jButtonFecharAba1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba1ActionPerformed
         super.dispose();
     }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
@@ -245,17 +296,21 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
         if (validaCampos()) {
             SaidaLotes saidaLotes = new SaidaLotes(
                 jComboBoxLotes.getSelectedIndex(),
+                jComboBoxLotes.getSelectedItem().toString(),
                 Float.parseFloat(jFormattedTextFieldValorSaida.getText().toString().replace(".", "").replace(",", ".")),
                 jFormattedTextFieldDataSaida.getText().toString()
             );
             
-            saidaLotes.salvar();
+            saidaLotesListModel.insertModel(saidaLotes);
+            jTableSaidaLote.setModel(saidaLotesListModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        List<SaidaLotes> lista = saidaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
+        saidaDeLotesListModel = new SaidaLotesListModel(lista);
+        jTableSaidaLote.setModel(saidaDeLotesListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void limpaCampos() {

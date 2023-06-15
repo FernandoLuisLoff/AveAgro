@@ -10,15 +10,19 @@ package br.edu.utfpr.entidades;
  */
 public class Custos {
     Integer idRegistroCustos;
-    Integer lote;
-    Integer produto;
+    Integer codLote;
+    String lote;
+    Integer codProduto;
+    String produto;
     Float quantidade;
     Float valor;
     String descricaoMotivo;
     String data;
     
-    public Custos(Integer lote, Integer produto, Float quantidade, Float valor, String descricaoMotivo, String data) {
+    public Custos(Integer codLote, String lote, Integer codProduto, String produto, Float quantidade, Float valor, String descricaoMotivo, String data) {
+        this.codLote = codLote;
         this.lote = lote;
+        this.codProduto = codProduto;
         this.produto = produto;
         this.quantidade = quantidade;
         this.valor = valor;
@@ -34,19 +38,35 @@ public class Custos {
         this.idRegistroCustos = idRegistroCustos;
     }
     
-    public Integer getLote() {
+    public Integer getCodLote() {
+        return codLote;
+    }
+
+    public void setCodLote(Integer codLote) {
+        this.codLote = codLote;
+    }
+    
+    public String getLote() {
         return lote;
     }
 
-    public void setLote(Integer lote) {
+    public void setLote(String lote) {
         this.lote = lote;
     }
     
-    public Integer getProduto() {
+    public Integer getCodProduto() {
+        return codProduto;
+    }
+
+    public void setCodProduto(Integer codProduto) {
+        this.codProduto = codProduto;
+    }
+    
+    public String getProduto() {
         return produto;
     }
 
-    public void setProduto(Integer produto) {
+    public void setProduto(String produto) {
         this.produto = produto;
     }
     
