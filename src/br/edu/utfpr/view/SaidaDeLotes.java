@@ -31,13 +31,13 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
     SaidaLotesDao saidaLotesDao = new SaidaLotesDao();
     SaidaLotesListModel saidaDeLotesListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public SaidaDeLotes() {
         initComponents();
         
-        // Listagem na tabela
-        List<SaidaLotes> lista = saidaLotesDao.listar();
-        saidaDeLotesListModel = new SaidaLotesListModel(lista);
-        jTableSaidaLote.setModel(saidaDeLotesListModel);
+        listagemDeDados("");
         
         alimentaComboBoxLotes();
     }
@@ -181,6 +181,11 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jLabelIdentificadorLotePesquisa.setText("Identificador do Lote");
 
@@ -300,21 +305,22 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
             
             saidaLotesDao.inserir(saidaLotes);
             
-            // Listagem na tabela
-            List<SaidaLotes> lista = saidaLotesDao.listar();
-            saidaDeLotesListModel = new SaidaLotesListModel(lista);
-            jTableSaidaLote.setModel(saidaDeLotesListModel);
+            listagemDeDados("");
         
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<SaidaLotes> lista = saidaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
-        saidaDeLotesListModel = new SaidaLotesListModel(lista);
-        jTableSaidaLote.setModel(saidaDeLotesListModel);
+        listagemDeDados(jTextFieldIdentificadorLotePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableSaidaLote.getSelectedRow();
+        Object codSaida = saidaDeLotesListModel.getValueAt(indiceTabela, 0);
+        saidaLotesDao.remover((Integer) codSaida);
+        listagemDeDados("");
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
@@ -322,9 +328,14 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
         jFormattedTextFieldDataSaida.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<SaidaLotes> lista = saidaLotesDao.buscarPorNome(nome);
+        saidaDeLotesListModel = new SaidaLotesListModel(lista);
+        jTableSaidaLote.setModel(saidaDeLotesListModel);
+    }
+    
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jComboBoxLotes.getSelectedIndex() == 0) {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();

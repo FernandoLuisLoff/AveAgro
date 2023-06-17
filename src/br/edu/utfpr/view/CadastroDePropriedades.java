@@ -20,13 +20,13 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     PropriedadesDao propriedadesDao = new PropriedadesDao();
     PropriedadesListModel propriedadesListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public CadastroDePropriedades() {
         initComponents();
         
-        // Listagem na tabela
-        List<Propriedades> lista = propriedadesDao.listar();
-        propriedadesListModel = new PropriedadesListModel(lista);
-        jTablePropriedadesCadastradas.setModel(propriedadesListModel);
+        listagemDeDados("");
     }
 
     /**
@@ -357,20 +357,14 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             // Gravação no banco
             propriedadesDao.inserir(propriedades);
             
-            // Listagem na tabela
-            List<Propriedades> lista = propriedadesDao.listar();
-            propriedadesListModel = new PropriedadesListModel(lista);
-            jTablePropriedadesCadastradas.setModel(propriedadesListModel);
+            listagemDeDados("");
         
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela por nome
-        List<Propriedades> lista = propriedadesDao.buscarPorNome(jTextFieldNomePropriedadePesquisar.getText());
-        propriedadesListModel = new PropriedadesListModel(lista);
-        jTablePropriedadesCadastradas.setModel(propriedadesListModel);
+        listagemDeDados(jTextFieldNomePropriedadePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jFormattedTextFieldCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPFocusLost
@@ -391,9 +385,24 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jFormattedTextFieldCEPFocusLost
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
-        // remoção
+        int indiceTabela = jTablePropriedadesCadastradas.getSelectedRow();
+        Object codPropriedade = propriedadesListModel.getValueAt(indiceTabela, 0);
+        
+        if (propriedadesDao.verificaGranjasVinculadas((Integer) codPropriedade)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem uma ou mais granjas vinculadas a propriedade");
+        } else {
+            propriedadesDao.remover((Integer) codPropriedade);
+            listagemDeDados("");
+        }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela por nome
+        List<Propriedades> lista = propriedadesDao.buscarPorNome(nome);
+        propriedadesListModel = new PropriedadesListModel(lista);
+        jTablePropriedadesCadastradas.setModel(propriedadesListModel);
+    }
+        
     private void limpaCampos() {
         jTextFieldNomePropriedade.setText("");
         jFormattedTextFieldDataAquisicao.setText("");
@@ -407,8 +416,6 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     }
     
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jTextFieldNomePropriedade.getText().isEmpty()) {
             mensagens.errorMessage("Campo Inválido","Preencha o campo Nome Propriedade");
             jTextFieldNomePropriedade.requestFocus();

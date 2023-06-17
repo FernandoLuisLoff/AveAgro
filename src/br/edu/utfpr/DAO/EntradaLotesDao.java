@@ -74,7 +74,7 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
     
     @Override
     public boolean inserir(EntradaLotes entradaLotes) {
-        String sql = "INSERT INTO tblotes(tblotes_indicador, tblotes_granja, tblotes_qtd_frangos, tblotes_valor_entrada, tblotes_data_entrada)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tblotes_indicador, tblotes_granja, tblotes_qtd_frangos, tblotes_valor_entrada, tblotes_data_entrada)";
         sql += " VALUES(?, ?, ?, ?, ?)";
         try {
             stmt = connection.prepareStatement(sql);
@@ -83,6 +83,20 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             stmt.setFloat(3, entradaLotes.getQuantidadeFrangos());
             stmt.setFloat(4, entradaLotes.getValorEntradaLote());
             stmt.setString(5, entradaLotes.getDataEntrada());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tblotes_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
             stmt.execute();
             return true;
         } catch (SQLException ex) {
@@ -130,5 +144,65 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }
         return retorno;
+    }
+    
+    public boolean verificaSaidasDeLotesVinculadas(int codigo) {
+        String sql = "SELECT count(tbsaidalote_lote) AS saidasVinculadas FROM tbsaidalote";
+        sql += " WHERE tbsaidalote_lote = ?";
+        int perdasVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               perdasVinculadas = resultSet.getInt("saidasVinculadas");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return perdasVinculadas>0;
+    }
+    
+    public boolean verificaPerdasVinculadas(int codigo) {
+        String sql = "SELECT count(tbperdas_codigo) AS perdasVinculadas FROM tbperdas";
+        sql += " WHERE tbperdas_lote = ?";
+        int perdasVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               perdasVinculadas = resultSet.getInt("perdasVinculadas");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return perdasVinculadas>0;
+    }
+    
+    public boolean verificaCustosVinculados(int codigo) {
+        String sql = "SELECT count(tbcustos_codigo) AS custosVinculados FROM tbcustos";
+        sql += " WHERE tbcustos_lote = ?";
+        int custosVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               custosVinculadas = resultSet.getInt("custosVinculados");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return custosVinculadas>0;
     }
 }

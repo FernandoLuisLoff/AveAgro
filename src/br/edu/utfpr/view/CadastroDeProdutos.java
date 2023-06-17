@@ -8,7 +8,6 @@ import br.edu.utfpr.DAO.ProdutosDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Produtos;
 import br.edu.utfpr.model.ProdutosListModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +19,13 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
     ProdutosDao produtosDao = new ProdutosDao();
     ProdutosListModel produtosListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public CadastroDeProdutos() {
         initComponents();
         
-        // Listagem na tabela
-        List<Produtos> lista = produtosDao.listar();
-        produtosListModel = new ProdutosListModel(lista);
-        jTableProdutos.setModel(produtosListModel);
+        listagemDeDados("");
     }
 
     /**
@@ -196,6 +195,11 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
@@ -293,21 +297,27 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
             
             produtosDao.inserir(produtos);
             
-            // Listagem na tabela
-            List<Produtos> lista = produtosDao.listar();
-            produtosListModel = new ProdutosListModel(lista);
-            jTableProdutos.setModel(produtosListModel);
+            listagemDeDados("");
         
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<Produtos> lista = produtosDao.buscarPorNome(jTextFieldProdutoPesquisar.getText());
-        produtosListModel = new ProdutosListModel(lista);
-        jTableProdutos.setModel(produtosListModel);
+        listagemDeDados(jTextFieldProdutoPesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableProdutos.getSelectedRow();
+        Object codProduto = produtosListModel.getValueAt(indiceTabela, 0);
+        
+        if (produtosDao.verificaCustosVinculados((Integer) codProduto)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem um ou mais custos vinculados ao produto");
+        } else {
+            produtosDao.remover((Integer) codProduto);
+            listagemDeDados("");
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jTextFieldProduto.setText("");
@@ -317,9 +327,14 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
         jFormattedTextFieldValor.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<Produtos> lista = produtosDao.buscarPorNome(nome);
+        produtosListModel = new ProdutosListModel(lista);
+        jTableProdutos.setModel(produtosListModel);
+    }
+    
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jTextFieldProduto.getText().isEmpty()) {
             mensagens.errorMessage("Campo Inválido", "Preencha o campo Produto");
             jTextFieldProduto.requestFocus();

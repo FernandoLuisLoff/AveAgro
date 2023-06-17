@@ -7,7 +7,6 @@ package br.edu.utfpr.DAO;
 import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,7 +76,7 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
     
     @Override
     public boolean inserir(Propriedades propriedades) {
-        String sql = "INSERT INTO tbpropriedades(tbpropriedades_nome_propriedade, tbpropriedades_data_aquisicao, tbpropriedades_cep, tbpropriedades_cidade, tbpropriedades_estado, tbpropriedades_bairro, tbpropriedades_endereco, tbpropriedades_numero, tbpropriedades_complemento)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tbpropriedades_nome_propriedade, tbpropriedades_data_aquisicao, tbpropriedades_cep, tbpropriedades_cidade, tbpropriedades_estado, tbpropriedades_bairro, tbpropriedades_endereco, tbpropriedades_numero, tbpropriedades_complemento)";
         sql += " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
 
@@ -91,6 +90,20 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
             stmt.setString(7, propriedades.getEndereco());
             stmt.setString(8, propriedades.getNumero());
             stmt.setString(9, propriedades.getComplemento());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tbpropriedades_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
             stmt.execute();
             return true;
         } catch (SQLException ex) {
@@ -134,5 +147,25 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }
         return retorno;
+    }
+    
+    public boolean verificaGranjasVinculadas(int codigo) {
+        String sql = "SELECT count(tbgranjas_codigo) AS granjasVinculadas FROM tbgranjas";
+        sql += " WHERE tbgranjas_propriedade = ?";
+        int granjasVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               granjasVinculadas = resultSet.getInt("granjasVinculadas");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return granjasVinculadas>0;
     }
 }

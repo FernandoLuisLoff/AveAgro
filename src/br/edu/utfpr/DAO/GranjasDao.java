@@ -73,7 +73,7 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
     
     @Override
     public boolean inserir(Granjas granjas) {
-        String sql = "INSERT INTO tbgranjas(tbgranjas_identificador, tbgranjas_propriedade, tbgranjas_data_ini_atvs, tbgranjas_qtd_frangos_suportada)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tbgranjas_identificador, tbgranjas_propriedade, tbgranjas_data_ini_atvs, tbgranjas_qtd_frangos_suportada)";
         sql += " VALUES(?, ?, ?, ?)";
         try {
 
@@ -90,6 +90,20 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
         }
     }
 
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tbgranjas_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
     @Override
     protected List<Granjas> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
@@ -129,5 +143,25 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }
         return retorno;
+    }
+    
+    public boolean verificaLotesVinculados(int codigo) {
+        String sql = "SELECT count(tblotes_codigo) AS lotesVinculados FROM tblotes";
+        sql += " WHERE tblotes_granja = ?";
+        int lotesVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               lotesVinculadas = resultSet.getInt("lotesVinculados");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return lotesVinculadas>0;
     }
 }

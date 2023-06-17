@@ -77,7 +77,7 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
     
     @Override
     public boolean inserir(Custos custos) {
-        String sql = "INSERT INTO tbcustos(tbcustos_lote, tbcustos_produto, tbcustos_qtd, tbcustos_valor, tbcustos_descricao_motivo, tbcustos_data)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tbcustos_lote, tbcustos_produto, tbcustos_qtd, tbcustos_valor, tbcustos_descricao_motivo, tbcustos_data)";
         sql += " VALUES(?, ?, ?, ?, ?, ?)";
         try {
             stmt = connection.prepareStatement(sql);
@@ -95,6 +95,20 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
         }
     }
 
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tbcustos_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
     @Override
     protected List<Custos> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();

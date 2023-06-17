@@ -42,13 +42,13 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     CustosDao custosDao = new CustosDao();
     CustosListModel custosListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public RegistroDeCustos() {
         initComponents();
         
-        // Listagem na tabela
-        List<Custos> lista = custosDao.listar();
-        custosListModel = new CustosListModel(lista);
-        jTableRegistroCusto.setModel(custosListModel);
+        listagemDeDados("");
         
         alimentaComboBoxLotes();
         alimentaComboBoxProdutos();
@@ -293,6 +293,11 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
@@ -375,10 +380,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<Custos> lista = custosDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
-        custosListModel = new CustosListModel(lista);
-        jTableRegistroCusto.setModel(custosListModel);
+        listagemDeDados(jTextFieldIdentificadorLotePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
@@ -396,10 +398,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
 
             custosDao.inserir(custos);
             
-            // Listagem na tabela
-            List<Custos> lista = custosDao.listar();
-            custosListModel = new CustosListModel(lista);
-            jTableRegistroCusto.setModel(custosListModel);
+            listagemDeDados("");
         
             limpaCampos();
         }
@@ -420,6 +419,13 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jComboBoxProdutoActionPerformed
 
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableRegistroCusto.getSelectedRow();
+        Object codCusto = custosListModel.getValueAt(indiceTabela, 0);
+        custosDao.remover((Integer) codCusto);
+        listagemDeDados("");
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
+
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
         jComboBoxProduto.setSelectedIndex(0);
@@ -429,9 +435,14 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         jFormattedTextFieldData.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<Custos> lista = custosDao.buscarPorNome(nome);
+        custosListModel = new CustosListModel(lista);
+        jTableRegistroCusto.setModel(custosListModel);
+    }
+            
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jComboBoxLotes.getSelectedIndex() == 0) {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();

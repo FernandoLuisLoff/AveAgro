@@ -73,7 +73,7 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
 
     @Override
     public boolean inserir(Perdas perdas) {
-        String sql = "INSERT INTO tbperdas(tbperdas_lote, tbperdas_descricao_motivo, tbperdas_contagem_perdas, tbperdas_data_contagem)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tbperdas_lote, tbperdas_descricao_motivo, tbperdas_contagem_perdas, tbperdas_data_contagem)";
         sql += " VALUES(?, ?, ?, ?)";
         try {
             stmt = connection.prepareStatement(sql);
@@ -81,6 +81,20 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
             stmt.setString(2, perdas.getDescricaoMotivo());
             stmt.setInt(3, perdas.getContagemPerdas());
             stmt.setString(4, perdas.getDataContagem());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tbperdas_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
             stmt.execute();
             return true;
         } catch (SQLException ex) {

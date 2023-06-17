@@ -30,13 +30,13 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
     GranjasDao granjasDao = new GranjasDao();
     GranjasListModel granjasListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public CadastroDeGranjas() {
         initComponents();
         
-        // Listagem na tabela
-        List<Granjas> lista = granjasDao.listar();
-        granjasListModel = new GranjasListModel(lista);
-        jTableGranjas.setModel(granjasListModel);
+        listagemDeDados("");
         
         alimentaComboBoxPropriedades();
     }
@@ -220,6 +220,11 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
@@ -343,21 +348,27 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
             
             granjasDao.inserir(granjas);
                     
-            // Listagem na tabela
-            List<Granjas> lista = granjasDao.listar();
-            granjasListModel = new GranjasListModel(lista);
-            jTableGranjas.setModel(granjasListModel);
+            listagemDeDados("");
         
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<Granjas> lista = granjasDao.buscarPorNome(jTextFieldIdentificadorGranjaPesquisar.getText());
-        granjasListModel = new GranjasListModel(lista);
-        jTableGranjas.setModel(granjasListModel);
+        listagemDeDados(jTextFieldIdentificadorGranjaPesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableGranjas.getSelectedRow();
+        Object codGranja = granjasListModel.getValueAt(indiceTabela, 0);
+        
+        if (granjasDao.verificaLotesVinculados((Integer) codGranja)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem um ou mais lotes vinculados a granja");
+        } else {
+            granjasDao.remover((Integer) codGranja);
+            listagemDeDados("");
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jTextFieldIdentificador.setText("");
@@ -366,9 +377,14 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         jFormattedTextFieldQuantidadeFrangosSuportadas.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<Granjas> lista = granjasDao.buscarPorNome(nome);
+        granjasListModel = new GranjasListModel(lista);
+        jTableGranjas.setModel(granjasListModel);
+    }
+    
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jTextFieldIdentificador.getText().isEmpty()) {
             mensagens.errorMessage("Campo Inválido", "Preencha o campo Identificador");
             jTextFieldIdentificador.requestFocus();

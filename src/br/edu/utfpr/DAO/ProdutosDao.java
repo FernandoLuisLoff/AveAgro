@@ -72,7 +72,7 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
     
     @Override
     public boolean inserir(Produtos produtos) {
-        String sql = "INSERT INTO tbprodutos(tbprodutos_produto, tbprodutos_categoria, tbprodutos_qtd_vol, tbprodutos_un_medida, tbprodutos_valor)";
+        String sql = "INSERT INTO "+getNomeTabela()+"(tbprodutos_produto, tbprodutos_categoria, tbprodutos_qtd_vol, tbprodutos_un_medida, tbprodutos_valor)";
         sql += " VALUES(?, ?, ?, ?, ?)";
         try {
             stmt = connection.prepareStatement(sql);
@@ -109,6 +109,20 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
         return retorno;
     }
     
+    @Override
+    public boolean remover(int id) {
+        String sql = "DELETE FROM "+getNomeTabela()+" WHERE tbprodutos_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
     public List<Produtos> buscarPorNome(String nome) {
         String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbprodutos_produto LIKE ?";
         List<Produtos> retorno = new ArrayList<>();
@@ -124,5 +138,25 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }
         return retorno;
+    }
+    
+    public boolean verificaCustosVinculados(int codigo) {
+        String sql = "SELECT count(tbcustos_codigo) AS custosVinculados FROM tbcustos";
+        sql += " WHERE tbcustos_produto = ?";
+        int custosVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               custosVinculadas = resultSet.getInt("custosVinculados");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return custosVinculadas>0;
     }
 }

@@ -31,13 +31,13 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     PerdasDao perdasDao = new PerdasDao();
     PerdasListModel perdasListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public RegistroDePerdas() {
         initComponents();
         
-        // Listagem na tabela
-        List<Perdas> lista = perdasDao.listar();
-        perdasListModel = new PerdasListModel(lista);
-        jTableRegistroPerda.setModel(perdasListModel);
+        listagemDeDados("");
         
         alimentaComboBoxLotes();
     }
@@ -241,6 +241,11 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
@@ -334,10 +339,7 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
             
             perdasDao.inserir(perdas);
             
-            // Listagem na tabela
-            List<Perdas> lista = perdasDao.listar();
-            perdasListModel = new PerdasListModel(lista);
-            jTableRegistroPerda.setModel(perdasListModel);
+            listagemDeDados("");
             
             limpaCampos();
         }
@@ -348,11 +350,15 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<Perdas> lista = perdasDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
-        perdasListModel = new PerdasListModel(lista);
-        jTableRegistroPerda.setModel(perdasListModel);
+        listagemDeDados(jTextFieldIdentificadorLotePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableRegistroPerda.getSelectedRow();
+        Object codPerda = perdasListModel.getValueAt(indiceTabela, 0);
+        perdasDao.remover((Integer) codPerda);
+        listagemDeDados("");
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
@@ -361,9 +367,14 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
         jFormattedTextFieldDataContagem.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<Perdas> lista = perdasDao.buscarPorNome(nome);
+        perdasListModel = new PerdasListModel(lista);
+        jTableRegistroPerda.setModel(perdasListModel);
+    }
+    
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jComboBoxLotes.getSelectedIndex() == 0) {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();

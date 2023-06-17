@@ -11,7 +11,6 @@ import br.edu.utfpr.entidades.Granjas;
 import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.model.EntradaDeLotesListModel;
 import br.edu.utfpr.model.GranjasListModel;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -34,13 +33,13 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
     EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
     EntradaDeLotesListModel entradaLotesListModel;
     
+    // Funcoes para mensagens
+    Mensagens mensagens = new Mensagens();
+    
     public EntradaDeLotes() {
         initComponents();
         
-        // Listagem na tabela
-        List<EntradaLotes> lista = entradaLotesDao.listar();
-        entradaLotesListModel = new EntradaDeLotesListModel(lista);
-        jTableEntradaLote.setModel(entradaLotesListModel);
+        listagemDeDados("");
         
         alimentaComboBoxGranjas();
     }
@@ -217,6 +216,11 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
+        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExcluirActionPerformed(evt);
+            }
+        });
 
         jLabelIdentificadorLotePesquisa.setText("Identificador do Lote");
 
@@ -312,10 +316,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
             
             entradaLotesDao.inserir(entradaLotes);
             
-            // Listagem na tabela
-            List<EntradaLotes> lista = entradaLotesDao.listar();
-            entradaLotesListModel = new EntradaDeLotesListModel(lista);
-            jTableEntradaLote.setModel(entradaLotesListModel);
+            listagemDeDados("");
 
             limpaCampos();
         }
@@ -350,11 +351,24 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
     }
     
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // Listagem na tabela
-        List<EntradaLotes> lista = entradaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
-        entradaLotesListModel = new EntradaDeLotesListModel(lista);
-        jTableEntradaLote.setModel(entradaLotesListModel);
+        listagemDeDados(jTextFieldIdentificadorLotePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
+
+    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        int indiceTabela = jTableEntradaLote.getSelectedRow();
+        Object codLote = entradaLotesListModel.getValueAt(indiceTabela, 0);
+        
+        if (entradaLotesDao.verificaSaidasDeLotesVinculadas((Integer) codLote)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem uma ou mais saidas de lote vinculados ao lote");
+        } else if (entradaLotesDao.verificaPerdasVinculadas((Integer) codLote)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem uma ou mais contagem de perdas vinculados ao lote");
+        } else if (entradaLotesDao.verificaCustosVinculados((Integer) codLote)) {
+            mensagens.errorMessage("Exclusão Inválida","Existem um ou mais custos vinculados ao lote");
+        } else {
+            entradaLotesDao.remover((Integer) codLote);
+            listagemDeDados("");
+        }
+    }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {
         jTextFieldIdentificador.setText("");
@@ -364,9 +378,14 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
         jFormattedTextFieldDataEntrada.setText("");
     }
     
+    private void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<EntradaLotes> lista = entradaLotesDao.buscarPorNome(nome);
+        entradaLotesListModel = new EntradaDeLotesListModel(lista);
+        jTableEntradaLote.setModel(entradaLotesListModel);
+    }
+    
     private boolean validaCampos() {
-        Mensagens mensagens = new Mensagens();
-        
         if (jTextFieldIdentificador.getText().isEmpty()) {
             mensagens.errorMessage("Campo Inválido","Preencha o campo Identificador");
             jTextFieldIdentificador.requestFocus();
