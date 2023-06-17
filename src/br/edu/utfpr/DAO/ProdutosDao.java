@@ -69,6 +69,25 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
             return null;
         }
     }
+    
+    @Override
+    public boolean inserir(Produtos produtos) {
+        String sql = "INSERT INTO tbprodutos(tbprodutos_produto, tbprodutos_categoria, tbprodutos_qtd_vol, tbprodutos_un_medida, tbprodutos_valor)";
+        sql += " VALUES(?, ?, ?, ?, ?)";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, produtos.getProduto());
+            stmt.setString(2, produtos.getCategoria());
+            stmt.setFloat(3, produtos.getQuantidadeVolume());
+            stmt.setString(4, produtos.getUnidadeMedida());
+            stmt.setFloat(5, produtos.getValor());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
     protected List<Produtos> buscarPorCodigo(int codigo) {

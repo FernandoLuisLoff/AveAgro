@@ -61,8 +61,4 @@ public class SaidaLotes {
     public void setDataSaida(String dataSaida) {
         this.dataSaida = dataSaida;
     }
-    
-    public void salvar() { 
-            
-    }
 }

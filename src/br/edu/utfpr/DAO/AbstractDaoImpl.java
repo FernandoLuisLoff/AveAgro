@@ -19,7 +19,7 @@ public abstract class AbstractDaoImpl<T> {
     private Connection connection;
     protected abstract T mapResultSetToEntity(ResultSet rs);
     protected abstract String getNomeTabela();
-    //protected abstract boolean inserir(T entidade);
+    protected abstract boolean inserir(T entidade);
     //protected abstract boolean alterar(T entidade);
     //protected abstract boolean remover(int codigo);
     protected abstract List<T> buscarPorCodigo(int codigo);
@@ -37,6 +37,5 @@ public abstract class AbstractDaoImpl<T> {
             ex.printStackTrace();
         }
         return retorno;
-    }    
-    
+    }
 }

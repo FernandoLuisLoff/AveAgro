@@ -11,7 +11,6 @@ import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.SaidaLotes;
 import br.edu.utfpr.model.EntradaDeLotesListModel;
 import br.edu.utfpr.model.SaidaLotesListModel;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -28,16 +27,14 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
     EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
     EntradaDeLotesListModel entradaLotesListModel;
     
-    // ListModel SaidaLotes
-    List<SaidaLotes> listaSaidaLotes = new ArrayList<SaidaLotes>();
-    SaidaLotesListModel saidaLotesListModel = new SaidaLotesListModel(listaSaidaLotes);
-    
     // Conexão com banco
     SaidaLotesDao saidaLotesDao = new SaidaLotesDao();
     SaidaLotesListModel saidaDeLotesListModel;
     
     public SaidaDeLotes() {
         initComponents();
+        
+        // Listagem na tabela
         List<SaidaLotes> lista = saidaLotesDao.listar();
         saidaDeLotesListModel = new SaidaLotesListModel(lista);
         jTableSaidaLote.setModel(saidaDeLotesListModel);
@@ -295,19 +292,25 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (validaCampos()) {
             SaidaLotes saidaLotes = new SaidaLotes(
-                jComboBoxLotes.getSelectedIndex(),
+                codigosLotes[jComboBoxLotes.getSelectedIndex()-1],
                 jComboBoxLotes.getSelectedItem().toString(),
                 Float.parseFloat(jFormattedTextFieldValorSaida.getText().toString().replace(".", "").replace(",", ".")),
                 jFormattedTextFieldDataSaida.getText().toString()
             );
             
-            saidaLotesListModel.insertModel(saidaLotes);
-            jTableSaidaLote.setModel(saidaLotesListModel);
+            saidaLotesDao.inserir(saidaLotes);
+            
+            // Listagem na tabela
+            List<SaidaLotes> lista = saidaLotesDao.listar();
+            saidaDeLotesListModel = new SaidaLotesListModel(lista);
+            jTableSaidaLote.setModel(saidaDeLotesListModel);
+        
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<SaidaLotes> lista = saidaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
         saidaDeLotesListModel = new SaidaLotesListModel(lista);
         jTableSaidaLote.setModel(saidaDeLotesListModel);

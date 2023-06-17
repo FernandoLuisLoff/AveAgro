@@ -7,6 +7,7 @@ package br.edu.utfpr.DAO;
 import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,6 +72,30 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
         }catch (SQLException ex) {
             mensagem.errorMessage("Erro", "Erro ao criar propriedade: " + ex.getMessage());
             return null;
+        }
+    }
+    
+    @Override
+    public boolean inserir(Propriedades propriedades) {
+        String sql = "INSERT INTO tbpropriedades(tbpropriedades_nome_propriedade, tbpropriedades_data_aquisicao, tbpropriedades_cep, tbpropriedades_cidade, tbpropriedades_estado, tbpropriedades_bairro, tbpropriedades_endereco, tbpropriedades_numero, tbpropriedades_complemento)";
+        sql += " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, propriedades.getNomePropriedade());
+            stmt.setString(2, propriedades.getDataAquisicao());
+            stmt.setString(3, propriedades.getCep());
+            stmt.setString(4, propriedades.getCidade());
+            stmt.setString(5, propriedades.getEstado());
+            stmt.setString(6, propriedades.getBairro());
+            stmt.setString(7, propriedades.getEndereco());
+            stmt.setString(8, propriedades.getNumero());
+            stmt.setString(9, propriedades.getComplemento());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
         }
     }
 

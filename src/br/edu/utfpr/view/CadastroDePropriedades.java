@@ -9,7 +9,6 @@ import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.funcoes.Cep;
 import br.edu.utfpr.model.PropriedadesListModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,14 +16,14 @@ import java.util.List;
  * @author ferlo
  */
 public class CadastroDePropriedades extends javax.swing.JInternalFrame {
-    List<Propriedades> listaPropriedades = new ArrayList<Propriedades>();
-    PropriedadesListModel propriedadesModel = new PropriedadesListModel(listaPropriedades);
-    
+    // Conexão com banco
     PropriedadesDao propriedadesDao = new PropriedadesDao();
     PropriedadesListModel propriedadesListModel;
     
     public CadastroDePropriedades() {
         initComponents();
+        
+        // Listagem na tabela
         List<Propriedades> lista = propriedadesDao.listar();
         propriedadesListModel = new PropriedadesListModel(lista);
         jTablePropriedadesCadastradas.setModel(propriedadesListModel);
@@ -355,19 +354,27 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
                 jTextFieldComplemento.getText()
             );
             
-            propriedadesModel.insertModel(propriedades);
-            jTablePropriedadesCadastradas.setModel(propriedadesModel);
+            // Gravação no banco
+            propriedadesDao.inserir(propriedades);
+            
+            // Listagem na tabela
+            List<Propriedades> lista = propriedadesDao.listar();
+            propriedadesListModel = new PropriedadesListModel(lista);
+            jTablePropriedadesCadastradas.setModel(propriedadesListModel);
+        
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela por nome
         List<Propriedades> lista = propriedadesDao.buscarPorNome(jTextFieldNomePropriedadePesquisar.getText());
         propriedadesListModel = new PropriedadesListModel(lista);
         jTablePropriedadesCadastradas.setModel(propriedadesListModel);
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void jFormattedTextFieldCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCEPFocusLost
+        // Ferramenta para busca de CEP
         Cep cep = new Cep();
         
         jTextFieldCidade.setText("");
@@ -384,8 +391,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jFormattedTextFieldCEPFocusLost
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
-        int linha = jTablePropriedadesCadastradas.getSelectedRow();
-        propriedadesModel.removeModel(linha);
+        // remoção
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void limpaCampos() {

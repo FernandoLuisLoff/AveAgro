@@ -73,8 +73,4 @@ public class Produtos {
     public void setValor(Float valor) {
         this.valor = valor;
     }
-    
-    public void salvar() { 
-            
-    }
 }

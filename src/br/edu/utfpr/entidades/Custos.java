@@ -101,8 +101,4 @@ public class Custos {
     public void setData(String data) {
         this.data = data;
     }
-    
-    public void salvar() { 
-            
-    }
 }

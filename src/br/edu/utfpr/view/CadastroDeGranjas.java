@@ -11,7 +11,6 @@ import br.edu.utfpr.entidades.Granjas;
 import br.edu.utfpr.entidades.Propriedades;
 import br.edu.utfpr.model.GranjasListModel;
 import br.edu.utfpr.model.PropriedadesListModel;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -27,16 +26,14 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
     PropriedadesDao propriedadesDao = new PropriedadesDao();
     PropriedadesListModel propriedadesListModel;
     
-    // ListModel Granjas
-    List<Granjas> listaGranjas = new ArrayList<Granjas>();
-    GranjasListModel granjasModel = new GranjasListModel(listaGranjas);
-    
     // Conexão com banco
     GranjasDao granjasDao = new GranjasDao();
     GranjasListModel granjasListModel;
     
     public CadastroDeGranjas() {
         initComponents();
+        
+        // Listagem na tabela
         List<Granjas> lista = granjasDao.listar();
         granjasListModel = new GranjasListModel(lista);
         jTableGranjas.setModel(granjasListModel);
@@ -338,19 +335,25 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         if (validaCampos()) {
             Granjas granjas = new Granjas(
                 jTextFieldIdentificador.getText(),
-                jComboBoxPropriedade.getSelectedIndex(),
+                codigosPropriedades[jComboBoxPropriedade.getSelectedIndex()-1],
                 jComboBoxPropriedade.getSelectedItem().toString(),
                 jFormattedTextFieldDataIniAtividades.getText().toString(),
                 Integer.parseInt(jFormattedTextFieldQuantidadeFrangosSuportadas.getText().toString().replace(".", ""))
             );
             
-            granjasModel.insertModel(granjas);
-            jTableGranjas.setModel(granjasModel);
+            granjasDao.inserir(granjas);
+                    
+            // Listagem na tabela
+            List<Granjas> lista = granjasDao.listar();
+            granjasListModel = new GranjasListModel(lista);
+            jTableGranjas.setModel(granjasListModel);
+        
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<Granjas> lista = granjasDao.buscarPorNome(jTextFieldIdentificadorGranjaPesquisar.getText());
         granjasListModel = new GranjasListModel(lista);
         jTableGranjas.setModel(granjasListModel);
@@ -416,4 +419,8 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFieldIdentificador;
     private javax.swing.JTextField jTextFieldIdentificadorGranjaPesquisar;
     // End of variables declaration//GEN-END:variables
+
+    private boolean Date(String datasPropriedade) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

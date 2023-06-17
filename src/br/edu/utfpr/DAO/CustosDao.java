@@ -74,13 +74,33 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
             return null;
         }
     }
+    
+    @Override
+    public boolean inserir(Custos custos) {
+        String sql = "INSERT INTO tbcustos(tbcustos_lote, tbcustos_produto, tbcustos_qtd, tbcustos_valor, tbcustos_descricao_motivo, tbcustos_data)";
+        sql += " VALUES(?, ?, ?, ?, ?, ?)";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, custos.getCodLote());
+            stmt.setInt(2, custos.getCodProduto());
+            stmt.setFloat(3, custos.getQuantidade());
+            stmt.setFloat(4, custos.getvalor());
+            stmt.setString(5, custos.getDescricaoMotivo());
+            stmt.setString(6, custos.getData());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
     protected List<Custos> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbcustos_lote)";
         sql += " INNER JOIN tbprodutos ON (tbprodutos_codigo=tbcustos_produto)";
-        sql += " WHERE tbcustos_lote = ?";
+        sql += " WHERE tbcustos_codigo = ?";
         List<Custos> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
@@ -118,4 +138,23 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
         return retorno;
     }
     
+    public int buscaValorProduto(int codigo) {
+        String sql = "SELECT tbprodutos_valor FROM tbprodutos";
+        sql += " WHERE tbprodutos_codigo = ?";
+        int retorno = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                ResultSet resultSet = rs;
+                retorno = resultSet.getInt("tbprodutos_valor");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return retorno;
+    }
 }

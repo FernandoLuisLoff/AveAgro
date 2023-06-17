@@ -71,8 +71,4 @@ public class Perdas {
     public void setDataContagem(String dataContagem) {
         this.dataContagem = dataContagem;
     }
-    
-    public void salvar() { 
-            
-    }
 }

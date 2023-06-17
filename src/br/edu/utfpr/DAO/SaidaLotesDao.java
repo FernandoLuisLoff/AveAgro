@@ -69,12 +69,29 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
             return null;
         }
     }
+    
+    @Override
+    public boolean inserir(SaidaLotes saidaLotes) {
+        String sql = "INSERT INTO tbsaidalote(tbsaidalote_lote, tbsaidalote_valor_saida, tbsaidalote_data_saida)";
+        sql += " VALUES(?, ?, ?)";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, saidaLotes.getCodLote());
+            stmt.setFloat(2, saidaLotes.getValorSaidaLote());
+            stmt.setString(3, saidaLotes.getDataSaida());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
     protected List<SaidaLotes> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbsaidalote_lote)";
-        sql += " WHERE tbsaidalote_lote = ?";
+        sql += " WHERE tbsaidalote_codigo = ?";
         List<SaidaLotes> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
@@ -110,5 +127,4 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
         }
         return retorno;
     }
-    
 }

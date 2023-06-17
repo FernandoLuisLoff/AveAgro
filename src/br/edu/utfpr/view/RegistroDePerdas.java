@@ -7,7 +7,6 @@ import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.entidades.Perdas;
 import br.edu.utfpr.model.EntradaDeLotesListModel;
 import br.edu.utfpr.model.PerdasListModel;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -21,7 +20,6 @@ import javax.swing.DefaultComboBoxModel;
  * @author ferlo
  */
 public class RegistroDePerdas extends javax.swing.JInternalFrame {
-
     // Guarda os codigos dos lotes do combobox
     Integer[] codigosLotes;
     
@@ -29,16 +27,14 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
     EntradaDeLotesListModel entradaLotesListModel;
     
-    // ListModel Perdas
-    List<Perdas> listaPerdas = new ArrayList<Perdas>();
-    PerdasListModel perdasModel = new PerdasListModel(listaPerdas);
-    
     // Conexão com banco
     PerdasDao perdasDao = new PerdasDao();
     PerdasListModel perdasListModel;
     
     public RegistroDePerdas() {
         initComponents();
+        
+        // Listagem na tabela
         List<Perdas> lista = perdasDao.listar();
         perdasListModel = new PerdasListModel(lista);
         jTableRegistroPerda.setModel(perdasListModel);
@@ -71,6 +67,24 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
         // Define o modelo de dados
         jComboBoxLotes.setModel(model);
     }
+    
+    private boolean validaQuantidadeDePerdasDoLote(int codigoLote) {
+        // Variavel para soma inicialida com o valor do campo de perdas
+        int somaQuantidadeDePerdasDoLote = Integer.parseInt(jFormattedTextFieldContagemPerdas.getText().toString().replace(".", ""));
+        
+        // Variavel alimentada com o valor total de entrada de frangos no lote
+        int quantidadeDeFrangosNaEntradaDoLote = perdasDao.buscaQuantidadeDeFrangosDoLote(codigoLote);
+        
+        List<Perdas> lista = perdasDao.buscarPorCodigoDoLote(codigoLote);
+        perdasListModel = new PerdasListModel(lista);
+        
+        for (int i=0; i<perdasListModel.getRowCount(); i++) {
+            somaQuantidadeDePerdasDoLote = somaQuantidadeDePerdasDoLote+Integer.parseInt(perdasListModel.getValueAt(i, 3).toString());
+        }
+        
+        return somaQuantidadeDePerdasDoLote>quantidadeDeFrangosNaEntradaDoLote;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -311,15 +325,20 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (validaCampos()) {
             Perdas perdas = new Perdas(
-                jComboBoxLotes.getSelectedIndex(),
+                codigosLotes[jComboBoxLotes.getSelectedIndex()-1],
                 jComboBoxLotes.getSelectedItem().toString(),
                 jTextFieldDescricaoMotivo.getText(),
                 Integer.parseInt(jFormattedTextFieldContagemPerdas.getText().toString().replace(".", "")),
                 jFormattedTextFieldDataContagem.getText().toString()
             );
             
-            perdasModel.insertModel(perdas);
-            jTableRegistroPerda.setModel(perdasModel);
+            perdasDao.inserir(perdas);
+            
+            // Listagem na tabela
+            List<Perdas> lista = perdasDao.listar();
+            perdasListModel = new PerdasListModel(lista);
+            jTableRegistroPerda.setModel(perdasListModel);
+            
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
@@ -329,6 +348,7 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<Perdas> lista = perdasDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
         perdasListModel = new PerdasListModel(lista);
         jTableRegistroPerda.setModel(perdasListModel);
@@ -358,6 +378,10 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
             return false;
         } else if (jFormattedTextFieldContagemPerdas.getText().toString().equals("0")) {
             mensagens.errorMessage("Campo Inválido", "Preencha uma Contagem de Perdas maior que 0");
+            jFormattedTextFieldContagemPerdas.requestFocus();
+            return false;
+        } else if (validaQuantidadeDePerdasDoLote(codigosLotes[jComboBoxLotes.getSelectedIndex()-1])) {
+            mensagens.errorMessage("Campo Inválido", "Contagem de perdas de frangos excedidendo a contagem da entrada");
             jFormattedTextFieldContagemPerdas.requestFocus();
             return false;
         } else if (jFormattedTextFieldDataContagem.getText().toString().isEmpty()) {

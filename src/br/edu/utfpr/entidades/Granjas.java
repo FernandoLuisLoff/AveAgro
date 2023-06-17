@@ -72,9 +72,5 @@ public class Granjas {
     public void setQuantidadeFrangosSuportada(Integer quantidadeFrangosSuportada) {
         this.quantidadeFrangosSuportada = quantidadeFrangosSuportada;
     }
-    
-    public void salvar() { 
-            
-    }
 }
 

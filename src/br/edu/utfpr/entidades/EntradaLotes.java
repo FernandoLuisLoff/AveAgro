@@ -84,8 +84,4 @@ public class EntradaLotes {
     public void setDataEntrada(String dataEntrada) {
         this.dataEntrada = dataEntrada;
     }
-    
-    public void salvar() { 
-            
-    }
 }

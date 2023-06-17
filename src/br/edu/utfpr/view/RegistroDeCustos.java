@@ -38,16 +38,14 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
     EntradaDeLotesListModel entradaLotesListModel;
     
-    // ListModel Perdas
-    List<Custos> listaCustos = new ArrayList<Custos>();
-    CustosListModel custosModel = new CustosListModel(listaCustos);
-    
     // Conexão com banco
     CustosDao custosDao = new CustosDao();
     CustosListModel custosListModel;
     
     public RegistroDeCustos() {
         initComponents();
+        
+        // Listagem na tabela
         List<Custos> lista = custosDao.listar();
         custosListModel = new CustosListModel(lista);
         jTableRegistroCusto.setModel(custosListModel);
@@ -171,6 +169,11 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         jLabelProduto.setText("Produto *");
 
         jComboBoxProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Produto", "Produto Teste" }));
+        jComboBoxProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxProdutoActionPerformed(evt);
+            }
+        });
 
         jFormattedTextFieldQuantidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
@@ -372,6 +375,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba2ActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<Custos> lista = custosDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
         custosListModel = new CustosListModel(lista);
         jTableRegistroCusto.setModel(custosListModel);
@@ -380,9 +384,9 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (validaCampos()) {
             Custos custos = new Custos(
-                jComboBoxLotes.getSelectedIndex(),
+                codigosLotes[jComboBoxLotes.getSelectedIndex()-1],
                 jComboBoxLotes.getSelectedItem().toString(),
-                jComboBoxProduto.getSelectedIndex(),
+                codigosProdutos[jComboBoxProduto.getSelectedIndex()-1],
                 jComboBoxProduto.getSelectedItem().toString(),
                 Float.parseFloat(jFormattedTextFieldQuantidade.getText().toString().replace(".", "").replace(",", ".")),
                 Float.parseFloat(jFormattedTextFieldValor.getText().toString().replace(".", "").replace(",", ".")),
@@ -390,8 +394,13 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                 jFormattedTextFieldData.getText().toString()
             );
 
-            custosModel.insertModel(custos);
-            jTableRegistroCusto.setModel(custosModel);
+            custosDao.inserir(custos);
+            
+            // Listagem na tabela
+            List<Custos> lista = custosDao.listar();
+            custosListModel = new CustosListModel(lista);
+            jTableRegistroCusto.setModel(custosListModel);
+        
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
@@ -399,6 +408,17 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     private void jButtonFecharAba1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharAba1ActionPerformed
         super.dispose();
     }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
+
+    private void jComboBoxProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProdutoActionPerformed
+        if (jComboBoxProduto.getSelectedIndex() != 0) {
+            int codigoProduto = codigosProdutos[jComboBoxProduto.getSelectedIndex()-1];
+            float valorCampo = custosDao.buscaValorProduto(codigoProduto);
+
+            jFormattedTextFieldValor.setText(Float.toString(valorCampo));
+        } else {
+            jFormattedTextFieldValor.setText("");
+        }
+    }//GEN-LAST:event_jComboBoxProdutoActionPerformed
 
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);

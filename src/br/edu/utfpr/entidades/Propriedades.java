@@ -81,6 +81,14 @@ public class Propriedades {
         this.estado = estado;
     }
     
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+    
     public String getEndereco() {
         return enderedo;
     }
@@ -103,9 +111,5 @@ public class Propriedades {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
-    }
-    
-    public void salvar() { 
-            
     }
 }

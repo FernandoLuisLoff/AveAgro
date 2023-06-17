@@ -71,12 +71,31 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             return null;
         }
     }
+    
+    @Override
+    public boolean inserir(EntradaLotes entradaLotes) {
+        String sql = "INSERT INTO tblotes(tblotes_indicador, tblotes_granja, tblotes_qtd_frangos, tblotes_valor_entrada, tblotes_data_entrada)";
+        sql += " VALUES(?, ?, ?, ?, ?)";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, entradaLotes.getIdentificador());
+            stmt.setInt(2, entradaLotes.getCodGranja());
+            stmt.setFloat(3, entradaLotes.getQuantidadeFrangos());
+            stmt.setFloat(4, entradaLotes.getValorEntradaLote());
+            stmt.setString(5, entradaLotes.getDataEntrada());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
     protected List<EntradaLotes> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)";
-        sql += " WHERE tblotes_granja = ?";
+        sql += " WHERE tblotes_codigo = ?";
         List<EntradaLotes> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
@@ -112,5 +131,4 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
         }
         return retorno;
     }
-
 }

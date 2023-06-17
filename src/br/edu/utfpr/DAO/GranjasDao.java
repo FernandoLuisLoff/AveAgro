@@ -70,6 +70,25 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
             return null;
         }
     }
+    
+    @Override
+    public boolean inserir(Granjas granjas) {
+        String sql = "INSERT INTO tbgranjas(tbgranjas_identificador, tbgranjas_propriedade, tbgranjas_data_ini_atvs, tbgranjas_qtd_frangos_suportada)";
+        sql += " VALUES(?, ?, ?, ?)";
+        try {
+
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, granjas.getIdentificador());
+            stmt.setInt(2, granjas.getCodPropriedade());
+            stmt.setString(3, granjas.getDataIniAtividades());
+            stmt.setInt(4, granjas.getQuantidadeFrangosSuportada());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
     protected List<Granjas> buscarPorCodigo(int codigo) {

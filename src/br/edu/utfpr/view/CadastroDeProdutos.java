@@ -16,14 +16,14 @@ import java.util.List;
  * @author ferlo
  */
 public class CadastroDeProdutos extends javax.swing.JInternalFrame {
-    List<Produtos> listaProdutos = new ArrayList<Produtos>();
-    ProdutosListModel produtosModel = new ProdutosListModel(listaProdutos);
-    
+    // Conexão com banco
     ProdutosDao produtosDao = new ProdutosDao();
     ProdutosListModel produtosListModel;
     
     public CadastroDeProdutos() {
         initComponents();
+        
+        // Listagem na tabela
         List<Produtos> lista = produtosDao.listar();
         produtosListModel = new ProdutosListModel(lista);
         jTableProdutos.setModel(produtosListModel);
@@ -291,13 +291,19 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
                 Float.parseFloat(jFormattedTextFieldValor.getText().toString().replace(".", "").replace(",", "."))
             );
             
-            produtosModel.insertModel(produtos);
-            jTableProdutos.setModel(produtosModel);
+            produtosDao.inserir(produtos);
+            
+            // Listagem na tabela
+            List<Produtos> lista = produtosDao.listar();
+            produtosListModel = new ProdutosListModel(lista);
+            jTableProdutos.setModel(produtosListModel);
+        
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<Produtos> lista = produtosDao.buscarPorNome(jTextFieldProdutoPesquisar.getText());
         produtosListModel = new ProdutosListModel(lista);
         jTableProdutos.setModel(produtosListModel);

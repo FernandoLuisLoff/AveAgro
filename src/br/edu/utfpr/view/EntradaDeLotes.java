@@ -20,17 +20,15 @@ import javax.swing.DefaultComboBoxModel;
  * @author ferlo
  */
 public class EntradaDeLotes extends javax.swing.JInternalFrame {
-    
     // Guarda os codigos das granjas do combobox
     Integer[] codigosGranjas;
+    
+    // Guarda as quantidades de frangos das granjas do combobox
+    Integer[] quantidadesFrangosGranjas;
     
     // Conexão com banco
     GranjasDao granjasDao = new GranjasDao();
     GranjasListModel granjasListModel;
-
-    // ListModel EntradaDeLotes
-    List<EntradaLotes> listaEntradaDeLotes = new ArrayList<EntradaLotes>();
-    EntradaDeLotesListModel entradaDeLotesModel = new EntradaDeLotesListModel(listaEntradaDeLotes);
     
     // Conexão com banco
     EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
@@ -38,6 +36,8 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
     
     public EntradaDeLotes() {
         initComponents();
+        
+        // Listagem na tabela
         List<EntradaLotes> lista = entradaLotesDao.listar();
         entradaLotesListModel = new EntradaDeLotesListModel(lista);
         jTableEntradaLote.setModel(entradaLotesListModel);
@@ -303,15 +303,20 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
         if (validaCampos()) {
             EntradaLotes entradaLotes = new EntradaLotes(
                 jTextFieldIdentificador.getText(),
-                jComboBoxGranjas.getSelectedIndex(),
+                codigosGranjas[jComboBoxGranjas.getSelectedIndex()-1],
                 jComboBoxGranjas.getSelectedItem().toString(),
                 Integer.parseInt(jFormattedTextFieldQuantidadeFrangos.getText().toString().replace(".", "")),
                 Float.parseFloat(jFormattedTextFieldValorEntrada.getText().toString().replace(".", "").replace(",", ".")),
                 jFormattedTextFieldDataEntrada.getText().toString()
             );
+            
+            entradaLotesDao.inserir(entradaLotes);
+            
+            // Listagem na tabela
+            List<EntradaLotes> lista = entradaLotesDao.listar();
+            entradaLotesListModel = new EntradaDeLotesListModel(lista);
+            jTableEntradaLote.setModel(entradaLotesListModel);
 
-            entradaDeLotesModel.insertModel(entradaLotes);
-            jTableEntradaLote.setModel(entradaDeLotesModel);
             limpaCampos();
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
@@ -325,6 +330,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
         String[] nomesGranjas = new String[granjasListModel.getRowCount()+1];
         
         codigosGranjas = new Integer[granjasListModel.getRowCount()];
+        quantidadesFrangosGranjas = new Integer[granjasListModel.getRowCount()];
         
         for (int i=0; i<=granjasListModel.getRowCount(); i++) {
             if (i==0) {
@@ -332,6 +338,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
             } else {
                 nomesGranjas[i] = granjasListModel.getValueAt(i-1, 1).toString();
                 codigosGranjas[i-1] = Integer.parseInt(granjasListModel.getValueAt(i-1, 0).toString());
+                quantidadesFrangosGranjas[i-1] = Integer.parseInt(granjasListModel.getValueAt(i-1, 4).toString());
             }
         }
         
@@ -343,6 +350,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
     }
     
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
+        // Listagem na tabela
         List<EntradaLotes> lista = entradaLotesDao.buscarPorNome(jTextFieldIdentificadorLotePesquisar.getText());
         entradaLotesListModel = new EntradaDeLotesListModel(lista);
         jTableEntradaLote.setModel(entradaLotesListModel);
@@ -373,6 +381,10 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
             return false;
         } else if (jFormattedTextFieldQuantidadeFrangos.getText().toString().equals("0")) {
             mensagens.errorMessage("Campo Inválido","Preencha uma Quantidade maior que 0");
+            jFormattedTextFieldQuantidadeFrangos.requestFocus();
+            return false;
+        } else if (Integer.parseInt(jFormattedTextFieldQuantidadeFrangos.getText().toString().replace(".", ""))>quantidadesFrangosGranjas[jComboBoxGranjas.getSelectedIndex()-1]) {
+            mensagens.errorMessage("Campo Inválido","Capacidade da Granja excedida, preencha uma Quantidade de Frangos menor ou igual a "+quantidadesFrangosGranjas[jComboBoxGranjas.getSelectedIndex()-1].toString()+" frangos");
             jFormattedTextFieldQuantidadeFrangos.requestFocus();
             return false;
         } else if (jFormattedTextFieldValorEntrada.getText().toString().isEmpty()) {

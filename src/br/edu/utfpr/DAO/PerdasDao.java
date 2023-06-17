@@ -72,7 +72,46 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
     }
 
     @Override
+    public boolean inserir(Perdas perdas) {
+        String sql = "INSERT INTO tbperdas(tbperdas_lote, tbperdas_descricao_motivo, tbperdas_contagem_perdas, tbperdas_data_contagem)";
+        sql += " VALUES(?, ?, ?, ?)";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, perdas.getCodLote());
+            stmt.setString(2, perdas.getDescricaoMotivo());
+            stmt.setInt(3, perdas.getContagemPerdas());
+            stmt.setString(4, perdas.getDataContagem());
+            stmt.execute();
+            return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
     protected List<Perdas> buscarPorCodigo(int codigo) {
+        String sql = "SELECT * FROM "+getNomeTabela();
+        sql += " INNER JOIN tblotes ON (tblotes_codigo=tbperdas_lote)";
+        sql += " WHERE tbperdas_codigo = ?";
+        List<Perdas> retorno = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               Perdas perdas = mapResultSetToEntity(rs);
+               retorno.add(perdas);
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return retorno;
+    }
+    
+    public List<Perdas> buscarPorCodigoDoLote(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbperdas_lote)";
         sql += " WHERE tbperdas_lote = ?";
@@ -112,4 +151,23 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
         return retorno;
     }
     
+    public int buscaQuantidadeDeFrangosDoLote(int codigo) {
+        String sql = "SELECT tblotes_qtd_frangos FROM  tblotes";
+        sql += " WHERE tblotes_codigo = ?";
+        int retorno = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                ResultSet resultSet = rs;
+                retorno = resultSet.getInt("tblotes_qtd_frangos");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return retorno;
+    }
 }
