@@ -141,4 +141,24 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
         }
         return retorno;
     }
+    
+    public boolean verificaLotesBaixado(int codigo) {
+        String sql = "SELECT count(tbsaidalote_lote) AS saidasVinculadas FROM tbsaidalote";
+        sql += " WHERE tbsaidalote_lote = ?";
+        int perdasVinculadas = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               perdasVinculadas = resultSet.getInt("saidasVinculadas");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return perdasVinculadas>0;
+    }
 }

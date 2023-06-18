@@ -447,6 +447,10 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
+        } else if (custosDao.verificaLotesBaixado(codigosLotes[jComboBoxLotes.getSelectedIndex()-1])) {
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote que já não foi baixado");
+            jComboBoxLotes.requestFocus();
+            return false;
         } else if (jComboBoxProduto.getSelectedIndex() == 0) {
             mensagens.errorMessage("Campo Inválido","Selecione um Produto");
             jComboBoxProduto.requestFocus();

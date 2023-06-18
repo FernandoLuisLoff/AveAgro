@@ -340,6 +340,10 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
+        } else if (saidaLotesDao.verificaLotesBaixado(codigosLotes[jComboBoxLotes.getSelectedIndex()-1])) {
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote que já não foi baixado");
+            jComboBoxLotes.requestFocus();
+            return false;
         } else if (jFormattedTextFieldValorSaida.getText().toString().isEmpty()) {
             mensagens.errorMessage("Campo Inválido","Preencha o campo Valor de Saída do Lote");
             jFormattedTextFieldValorSaida.requestFocus();

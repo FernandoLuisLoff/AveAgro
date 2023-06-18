@@ -379,6 +379,10 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
+        } else if (perdasDao.verificaLotesBaixado(codigosLotes[jComboBoxLotes.getSelectedIndex()-1])) {
+            mensagens.errorMessage("Campo Inválido","Selecione um Lote que já não foi baixado");
+            jComboBoxLotes.requestFocus();
+            return false;
         } else if (jTextFieldDescricaoMotivo.getText().isEmpty()) {
             mensagens.errorMessage("Campo Inválido","Preencha o campo Descrição/Motivo");
             jTextFieldDescricaoMotivo.requestFocus();
