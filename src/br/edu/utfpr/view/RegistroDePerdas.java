@@ -360,9 +360,15 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         int indiceTabela = jTableRegistroPerda.getSelectedRow();
-        Object codPerda = perdasListModel.getValueAt(indiceTabela, 0);
-        perdasDao.remover((Integer) codPerda);
-        listagemDeDados("");
+        Object codPerdas = perdasListModel.getValueAt(indiceTabela, 0);
+        
+        if (perdasDao.verificaLotesBaixado(perdasDao.codLotePeloCodPerda((Integer) codPerdas))) {
+            // Caso o lote ja tenha sido finalizado
+            mensagens.errorMessage("Exclusão Inválida","O Lote vinculado a essa Perda já foi baixado");
+        } else {
+            perdasDao.remover((Integer) codPerdas);
+            listagemDeDados("");
+        }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed

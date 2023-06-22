@@ -423,9 +423,15 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         int indiceTabela = jTableRegistroCusto.getSelectedRow();
-        Object codCusto = custosListModel.getValueAt(indiceTabela, 0);
-        custosDao.remover((Integer) codCusto);
-        listagemDeDados("");
+        Object codCustos = custosListModel.getValueAt(indiceTabela, 0);
+            
+        if (custosDao.verificaLotesBaixado(custosDao.codLotePeloCodCusto((Integer) codCustos))) {
+            // Caso o lote ja tenha sido finalizado
+            mensagens.errorMessage("Exclusão Inválida","O Lote vinculado a esse Custo já foi baixado");
+        } else {
+            custosDao.remover((Integer) codCustos);
+            listagemDeDados("");
+        }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
     private void jFormattedTextFieldQuantidadeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldQuantidadeFocusLost
