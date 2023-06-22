@@ -4,17 +4,29 @@
  */
 package br.edu.utfpr.view;
 
+import br.edu.utfpr.DAO.ArquivoDao;
+import br.edu.utfpr.DAO.EntradaLotesDao;
+import br.edu.utfpr.entidades.RelatorioLote;
+import br.edu.utfpr.model.RelatorioDeLoteListModel;
+import java.io.File;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ferlo
  */
 public class RelatorioDeLote extends javax.swing.JInternalFrame {
-
-    /**
-     * Creates new form RelatorioDeLote
-     */
+    
+    EntradaLotesDao entradaLotesDao = new EntradaLotesDao();
+    RelatorioDeLoteListModel relatorioDeLoteListModel;
+    
     public RelatorioDeLote() {
         initComponents();
+        listagemDeDados("");
     }
 
     /**
@@ -118,11 +130,11 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonPesquisar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelIdentificadorLotePesquisa)
-                        .addComponent(jTextFieldIdentificadorLotePesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldIdentificadorLotePesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonPesquisar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneRelatorioDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -140,13 +152,70 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
     private void jButtonEmitirRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmitirRelatorioActionPerformed
-        // TODO add your handling code here:
+        
+        if (jTableRelatorioDeLote.getSelectedRow() != -1) {
+            JFileChooser chooser = new JFileChooser();
+            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                
+                int indiceTabela = jTableRelatorioDeLote.getSelectedRow();
+                Object codLotes = relatorioDeLoteListModel.getValueAt(indiceTabela, 0);
+                
+                String relatorio = geraRelatorio((Integer) codLotes);
+                
+                File file = new File(chooser.getSelectedFile().getPath());
+                ArquivoDao arquivoDao = new ArquivoDao();
+                
+                if(!file.exists()){
+                    arquivoDao.gravar(file, relatorio);
+                } else {
+                    int opcao = JOptionPane.showConfirmDialog(this, "O arquivo espcificado já existe" + 
+                    "Deseja substituí-lo?", "Arquivo", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if(opcao == JOptionPane.YES_OPTION){
+                        arquivoDao.gravar(file, relatorio);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButtonEmitirRelatorioActionPerformed
 
     private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-        // TODO add your handling code here:
+        listagemDeDados(jTextFieldIdentificadorLotePesquisar.getText());
     }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
+    private String geraRelatorio(int codLotes) {
+        Locale localeBR = new Locale("pt","BR");
+        NumberFormat dinheiro = NumberFormat.getCurrencyInstance(localeBR);
+        NumberFormat inteiro = NumberFormat.getInstance();
+                
+        RelatorioLote relatorioLote = entradaLotesDao.buscarRelatorioDeLotePorCodigo(codLotes);
+
+        return "Identificador do Lote - "+relatorioLote.getIdentificador()+System.lineSeparator()
+                + "Propriedade - "+relatorioLote.getPropriedade()+System.lineSeparator()
+                + "Granja - "+relatorioLote.getGranja()+ System.lineSeparator()
+                + System.lineSeparator()
+                + "Data de Entrada - "+relatorioLote.getDataEntrada()+System.lineSeparator()
+                + "Data de Saida - "+relatorioLote.getDataSaida()+System.lineSeparator()
+                + System.lineSeparator()
+                + "------------ Resultado Financeiro ------------"+ System.lineSeparator()
+                + "Valor de Entrada                     "+dinheiro.format(relatorioLote.getValorEntradaLote()*(-1))+System.lineSeparator()
+                + "Soma dos Custos                      "+dinheiro.format(relatorioLote.getValorCustosLote()*(-1))+System.lineSeparator()
+                + "Valor da Saída                       "+dinheiro.format(relatorioLote.getValorSaidaLote())+System.lineSeparator()
+                + System.lineSeparator()
+                + "Resultado                            "+dinheiro.format(relatorioLote.getValorSaidaLote()-relatorioLote.getValorEntradaLote()-relatorioLote.getValorCustosLote())+System.lineSeparator()
+                + System.lineSeparator()
+                + "-------------- Resumo de Perdas --------------"+System.lineSeparator()
+                + "Quantidade Inicial de Frangos        "+inteiro.format(relatorioLote.getQuantidadeFrangos())+System.lineSeparator()
+                + "Contagem Total de Perdas             "+inteiro.format(relatorioLote.getSomaPerdas()*(-1))+System.lineSeparator()
+                + System.lineSeparator()
+                + "Contagem Final de Frangos            "+inteiro.format(relatorioLote.getQuantidadeFrangos()-relatorioLote.getSomaPerdas());
+    }
+    
+    public void listagemDeDados(String nome) {
+        // Listagem na tabela
+        List<RelatorioLote> lista = entradaLotesDao.buscarRelatorioDeLotePorNome(nome);
+        relatorioDeLoteListModel = new RelatorioDeLoteListModel(lista);
+        jTableRelatorioDeLote.setModel(relatorioDeLoteListModel);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonEmitirRelatorio;

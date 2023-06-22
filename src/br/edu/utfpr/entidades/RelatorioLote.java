@@ -9,17 +9,32 @@ package br.edu.utfpr.entidades;
  * @author ferlo
  */
 public class RelatorioLote {
-    private Integer idLote;
-    private String identificador;
-    private String propriedade;
-    private String granja;
-    private Integer quantidadeFrangos;
-    private Integer somaPerdas;
-    private Float valorEntradaLote;
-    private Float valorCustosLote;
-    private Float valorSaidaLote;
-    private String dataEntrada;
-    private String dataSaida;
+    Integer idLote;
+    String identificador;
+    String propriedade;
+    String granja;
+    Integer quantidadeFrangos;
+    Integer somaPerdas;
+    Float valorEntradaLote;
+    Float valorCustosLote;
+    Float valorSaidaLote;
+    String dataEntrada;
+    String dataSaida;
+    
+    public RelatorioLote(Integer idLote, String identificador, String propriedade, String granja, Integer quantidadeFrangos, Integer somaPerdas,
+    Float valorEntradaLote, Float valorCustosLote, Float valorSaidaLote, String dataEntrada, String dataSaida) {
+        this.idLote = idLote;
+        this.identificador = identificador;
+        this.propriedade = propriedade;
+        this.granja = granja;        
+        this.quantidadeFrangos = quantidadeFrangos;        
+        this.somaPerdas = somaPerdas;        
+        this.valorEntradaLote = valorEntradaLote;        
+        this.valorCustosLote = valorCustosLote; 
+        this.valorSaidaLote = valorSaidaLote;
+        this.dataEntrada = dataEntrada;
+        this.dataSaida = dataSaida;
+    }
 
     /**
      * @return the idLote

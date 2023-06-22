@@ -4,7 +4,7 @@
  */
 package br.edu.utfpr.model;
 
-import br.edu.utfpr.entidades.EntradaLotes;
+import br.edu.utfpr.entidades.RelatorioLote;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -13,18 +13,18 @@ import javax.swing.table.AbstractTableModel;
  * @author ferlo
  */
 public class RelatorioDeLoteListModel  extends AbstractTableModel {
-    private List<EntradaLotes> listaEntradaLotes;
+    private List<RelatorioLote> listaRelatorioLote;
     
-    private String[] colunas = new String[]{"Código", "Identificador", "Data da Entrada"};
+    private String[] colunas = new String[]{"Código", "Identificador", "Data da Entrada", "Data da Saída"};
     
     
-     public EntradaDeLotesListModel(List<EntradaLotes> listaEntradaLotes) {
-        this.listaEntradaLotes = listaEntradaLotes;
+     public RelatorioDeLoteListModel(List<RelatorioLote> listaRelatorioLote) {
+        this.listaRelatorioLote = listaRelatorioLote;
     }
 
     @Override
     public int getRowCount() {
-        return listaEntradaLotes.size();
+        return listaRelatorioLote.size();
     }
 
     @Override
@@ -34,24 +34,20 @@ public class RelatorioDeLoteListModel  extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        EntradaLotes entradaLotes = listaEntradaLotes.get(row);
+        RelatorioLote relatorioLote = listaRelatorioLote.get(row);
         switch (column) {
             case 0:
-                return entradaLotes.getIdLote();
+                return relatorioLote.getIdLote();
             case 1:
-                return entradaLotes.getIdentificador();
+                return relatorioLote.getIdentificador();
             case 2:
-                return entradaLotes.getGranja();
+                return relatorioLote.getDataEntrada();
             case 3:
-                return entradaLotes.getQuantidadeFrangos();
-            case 4:
-                return entradaLotes.getValorEntradaLote();
-            case 5:
-                return entradaLotes.getDataEntrada();
+                return relatorioLote.getDataSaida();
             default:
                 break;
         }
-        return listaEntradaLotes;
+        return listaRelatorioLote;
     }
 
     @Override
@@ -59,19 +55,19 @@ public class RelatorioDeLoteListModel  extends AbstractTableModel {
         return colunas[column];
     }
 
-    public void insertModel(EntradaLotes entradaLotes) {
-        listaEntradaLotes.add(entradaLotes);
+    public void insertModel(RelatorioLote relatorioLote) {
+        listaRelatorioLote.add(relatorioLote);
         int ultimoIndice = getRowCount() - 1;
         fireTableRowsInserted(ultimoIndice, ultimoIndice);
     }
 
     public void removeModel(int indexRow) {
-        listaEntradaLotes.remove(indexRow);
+        listaRelatorioLote.remove(indexRow);
         fireTableRowsDeleted(indexRow, indexRow);
     }
 
-    public void atualizarModel(int indiceLinha,EntradaLotes entradaLotes) {
-        listaEntradaLotes.set(indiceLinha, entradaLotes);
+    public void atualizarModel(int indiceLinha,RelatorioLote relatorioLote) {
+        listaRelatorioLote.set(indiceLinha, relatorioLote);
         fireTableRowsUpdated(indiceLinha, indiceLinha);
     }
     

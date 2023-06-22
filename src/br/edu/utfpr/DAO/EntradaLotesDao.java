@@ -5,6 +5,7 @@
 package br.edu.utfpr.DAO;
 
 import br.edu.utfpr.entidades.EntradaLotes;
+import br.edu.utfpr.entidades.RelatorioLote;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,6 +67,28 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             );
             entradaLotes.setIdLote(rs.getInt("tblotes_codigo"));
             return entradaLotes;
+        }catch (SQLException ex) {
+            mensagem.errorMessage("Erro", "Erro ao criar lote: " + ex.getMessage());
+            return null;
+        }
+    }
+    
+    protected RelatorioLote mapResultSetToEntity_Relatorio(ResultSet rs) {
+        try{
+            RelatorioLote relatorioLote = new RelatorioLote(
+                rs.getInt("idLote"),
+                rs.getString("identificador"),
+                rs.getString("propriedade"),
+                rs.getString("granja"),
+                rs.getInt("quantidadeFrangos"),
+                rs.getInt("somaPerdas"), 
+                rs.getFloat("valorEntradaLote"),
+                rs.getFloat("valorCustosLote"),
+                rs.getFloat("valorSaidaLote"),
+                rs.getString("dataEntrada"),
+                rs.getString("dataSaida")
+            );
+            return relatorioLote;
         }catch (SQLException ex) {
             mensagem.errorMessage("Erro", "Erro ao criar granja: " + ex.getMessage());
             return null;
@@ -245,18 +268,59 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
         return codGranja;
     }
     
-    public List<EntradaLotes> buscarRelatorioPorNome(String nome) {
-        String sql = "SELECT * FROM "+getNomeTabela();
-        sql += " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)";
-        sql += " WHERE tblotes_indicador LIKE ?";
-        List<EntradaLotes> retorno = new ArrayList<>();
+    public List<RelatorioLote> buscarRelatorioDeLotePorNome(String nome) {
+        String sql = "SELECT tblotes_codigo AS idLote, tblotes_indicador AS identificador, tbpropriedades_nome_propriedade AS propriedade,"
+            + " tbgranjas_identificador AS granja, tblotes_qtd_frangos AS quantidadeFrangos, COALESCE(SUM(tbperdas_contagem_perdas), 0) AS somaPerdas,"
+            + " tblotes_valor_entrada AS valorEntradaLote, COALESCE(SUM(tbcustos_valor), 0) AS valorCustosLote, COALESCE(tbsaidalote_valor_saida, 0) AS valorSaidaLote,"
+            + " tblotes_data_entrada AS dataEntrada, COALESCE(tbsaidalote_data_saida, 'Lote não Finalizado') AS dataSaida"
+            + " FROM "+getNomeTabela()
+            + " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)"
+            + " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)"
+            + " LEFT JOIN tbperdas ON (tbperdas_lote=tblotes_codigo)"
+            + " LEFT JOIN tbcustos ON (tbcustos_lote=tblotes_codigo)"
+            + " LEFT JOIN tbsaidalote ON (tbsaidalote_lote=tblotes_codigo)"
+            + " WHERE tblotes_indicador LIKE ?"
+            + " GROUP BY idLote, identificador, propriedade, granja, quantidadeFrangos,"
+            + " valorEntradaLote, valorSaidaLote, dataEntrada, dataSaida";
+       
+        List<RelatorioLote> retorno = new ArrayList<>();
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, "%" + nome + "%"); //garante a busca da string com começo.
             rs = stmt.executeQuery();
             while (rs.next()) {
-                EntradaLotes entradaLotes = mapResultSetToEntity(rs);
-                retorno.add(entradaLotes);
+                RelatorioLote relatorioLote = mapResultSetToEntity_Relatorio(rs);
+                retorno.add(relatorioLote);
+            }
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }
+        return retorno;
+    }
+    
+    public RelatorioLote buscarRelatorioDeLotePorCodigo(int codigo) {
+        String sql = "SELECT tblotes_codigo AS idLote, tblotes_indicador AS identificador, tbpropriedades_nome_propriedade AS propriedade,"
+            + " tbgranjas_identificador AS granja, tblotes_qtd_frangos AS quantidadeFrangos, COALESCE(SUM(tbperdas_contagem_perdas), 0) AS somaPerdas,"
+            + " tblotes_valor_entrada AS valorEntradaLote, COALESCE(SUM(tbcustos_valor), 0) AS valorCustosLote, COALESCE(tbsaidalote_valor_saida, 0) AS valorSaidaLote,"
+            + " tblotes_data_entrada AS dataEntrada, COALESCE(tbsaidalote_data_saida, 'Lote não Finalizado') AS dataSaida"
+            + " FROM "+getNomeTabela()
+            + " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)"
+            + " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)"
+            + " LEFT JOIN tbperdas ON (tbperdas_lote=tblotes_codigo)"
+            + " LEFT JOIN tbcustos ON (tbcustos_lote=tblotes_codigo)"
+            + " LEFT JOIN tbsaidalote ON (tbsaidalote_lote=tblotes_codigo)"
+            + " WHERE tblotes_codigo = ?"
+            + " GROUP BY idLote, identificador, propriedade, granja, quantidadeFrangos,"
+            + " valorEntradaLote, valorSaidaLote, dataEntrada, dataSaida";
+       
+        RelatorioLote retorno = new RelatorioLote(0, "", "", "", 0, 0, Float.parseFloat("0"), Float.parseFloat("0"), Float.parseFloat("0"), "", "");
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca da string com começo.
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                RelatorioLote relatorioLote = mapResultSetToEntity_Relatorio(rs);
+                retorno = relatorioLote;
             }
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
