@@ -25,7 +25,6 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     
     public CadastroDePropriedades() {
         initComponents();
-        
         listagemDeDados("");
     }
 
@@ -38,6 +37,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         jTabbedPanePropriedades = new javax.swing.JTabbedPane();
         jPanelAdicionarPropriedadeAba1 = new javax.swing.JPanel();
         jButtonSalvar = new javax.swing.JButton();
@@ -69,6 +69,19 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
         jLabelNomePropriedadePesquisa = new javax.swing.JLabel();
         jTextFieldNomePropriedadePesquisar = new javax.swing.JTextField();
         jButtonPesquisar = new javax.swing.JButton();
+
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 69, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         setClosable(true);
         setIconifiable(true);
@@ -250,6 +263,11 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
@@ -345,7 +363,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
             Propriedades propriedades = new Propriedades(
                 jTextFieldNomePropriedade.getText(),
                 jFormattedTextFieldDataAquisicao.getText().toString(),
-                jFormattedTextFieldCEP.getText().toString().replaceAll("[^0-9]+", ""),
+                jFormattedTextFieldCEP.getText().toString(),
                 jTextFieldCidade.getText(),
                 jTextFieldEstado.getText(),
                 jTextFieldBairro.getText(),
@@ -396,7 +414,24 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
-    private void listagemDeDados(String nome) {
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTablePropriedadesCadastradas.getSelectedRow() != -1) {
+            int indiceTabela = jTablePropriedadesCadastradas.getSelectedRow();
+            Object codPropriedade = propriedadesListModel.getValueAt(indiceTabela, 0);
+            
+            EditarPropriedades editarPropriedades = new EditarPropriedades(propriedadesDao.buscarPorCodigo((Integer) codPropriedade), this);
+
+            int x = (int) (getParent().getWidth() - editarPropriedades.getWidth()) / 2;
+            int y = (int) (getParent().getHeight() - editarPropriedades.getHeight()) / 2;
+
+            editarPropriedades.setLocation(x, y);
+
+            getParent().add(editarPropriedades);
+            editarPropriedades.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
+    public void listagemDeDados(String nome) {
         // Listagem na tabela por nome
         List<Propriedades> lista = propriedadesDao.buscarPorNome(nome);
         propriedadesListModel = new PropriedadesListModel(lista);
@@ -462,6 +497,7 @@ public class CadastroDePropriedades extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JFormattedTextField jFormattedTextFieldCEP;
     private javax.swing.JFormattedTextField jFormattedTextFieldDataAquisicao;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabelBairro;
     private javax.swing.JLabel jLabelCEP;
     private javax.swing.JLabel jLabelCidade;

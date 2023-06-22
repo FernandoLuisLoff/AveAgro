@@ -21,7 +21,7 @@ public abstract class AbstractDaoImpl<T> {
     protected abstract String getNomeTabela();
     protected abstract boolean inserir(T entidade);
     protected abstract boolean remover(int codigo);
-    //protected abstract boolean alterar(T entidade);
+    protected abstract boolean alterar(T entidade);
     protected abstract List<T> buscarPorCodigo(int codigo);
     
     public List<T> listar(){

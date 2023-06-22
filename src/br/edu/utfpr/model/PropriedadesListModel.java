@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
 public class PropriedadesListModel extends AbstractTableModel {
     private List<Propriedades> listaPropriedade;
     
-    private String[] colunas = new String[]{"Código", "Nome da Propriedade", "Data de Aquisição", "CEP", "Estado", "Cidade", "Endereço", "Número", "Complemento"};
+    private String[] colunas = new String[]{"Código", "Nome da Propriedade", "Data de Aquisição", "CEP", "Estado", "Cidade", "Bairro", "Endereço", "Número", "Complemento"};
     
     
      public PropriedadesListModel(List<Propriedades> listaPropriedade) {
@@ -49,10 +49,12 @@ public class PropriedadesListModel extends AbstractTableModel {
             case 5:
                 return propriedade.getCidade();
             case 6:
-                return propriedade.getEndereco();
+                return propriedade.getBairro();
             case 7:
-                return propriedade.getNumero();
+                return propriedade.getEndereco();
             case 8:
+                return propriedade.getNumero();
+            case 9:
                 return propriedade.getComplemento();
             default:
                 break;

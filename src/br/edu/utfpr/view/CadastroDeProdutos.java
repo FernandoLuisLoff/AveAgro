@@ -203,6 +203,11 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jLabelProdutoPesquisa.setText("Produto");
 
@@ -319,6 +324,23 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableProdutos.getSelectedRow() != -1) {
+            int indiceTabela = jTableProdutos.getSelectedRow();
+            Object codProduto = produtosListModel.getValueAt(indiceTabela, 0);
+            
+            EditarProdutos editarProdutos = new EditarProdutos(produtosDao.buscarPorCodigo((Integer) codProduto), this);
+
+            int x = (int) (getParent().getWidth() - editarProdutos.getWidth()) / 2;
+            int y = (int) (getParent().getHeight() - editarProdutos.getHeight()) / 2;
+
+            editarProdutos.setLocation(x, y);
+
+            getParent().add(editarProdutos);
+            editarProdutos.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
     private void limpaCampos() {
         jTextFieldProduto.setText("");
         jTextFieldCategoria.setText("");
@@ -327,7 +349,7 @@ public class CadastroDeProdutos extends javax.swing.JInternalFrame {
         jFormattedTextFieldValor.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<Produtos> lista = produtosDao.buscarPorNome(nome);
         produtosListModel = new ProdutosListModel(lista);

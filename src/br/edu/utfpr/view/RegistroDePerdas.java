@@ -249,6 +249,11 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/pesquisar.png"))); // NOI18N
         jButtonPesquisar.setText("Perquisar");
@@ -360,6 +365,28 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
         listagemDeDados("");
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableRegistroPerda.getSelectedRow() != -1) {
+            int indiceTabela = jTableRegistroPerda.getSelectedRow();
+            Object codPerdas = perdasListModel.getValueAt(indiceTabela, 0);
+            
+            if (perdasDao.verificaLotesBaixado(perdasDao.codLotePeloCodPerda((Integer) codPerdas))) {
+                // Caso o lote ja tenha sido finalizado
+                mensagens.errorMessage("Edição Inválida","O Lote vinculado a essa Perda já foi baixado");
+            } else {
+                EditarPerdas editarPerdas = new EditarPerdas(perdasDao.buscarPorCodigo((Integer) codPerdas), this);
+
+                int x = (int) (getParent().getWidth() - editarPerdas.getWidth()) / 2;
+                int y = (int) (getParent().getHeight() - editarPerdas.getHeight()) / 2;
+
+                editarPerdas.setLocation(x, y);
+
+                getParent().add(editarPerdas);
+                editarPerdas.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
         jTextFieldDescricaoMotivo.setText("");
@@ -367,7 +394,7 @@ public class RegistroDePerdas extends javax.swing.JInternalFrame {
         jFormattedTextFieldDataContagem.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<Perdas> lista = perdasDao.buscarPorNome(nome);
         perdasListModel = new PerdasListModel(lista);

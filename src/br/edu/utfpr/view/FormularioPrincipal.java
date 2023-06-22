@@ -4,12 +4,10 @@
  */
 package br.edu.utfpr.view;
 
-import br.edu.utfpr.DAO.ConexaoDao;
 import br.edu.utfpr.funcoes.Mensagens;
 import java.awt.Image; 
 import java.awt.Graphics; 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  *

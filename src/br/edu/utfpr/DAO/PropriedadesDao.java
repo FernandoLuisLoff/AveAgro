@@ -111,9 +111,32 @@ public class PropriedadesDao extends AbstractDaoImpl<Propriedades>{
             return false;
         }
     }
+    
+    @Override
+    public boolean alterar(Propriedades propriedades) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbpropriedades_nome_propriedade=?, tbpropriedades_data_aquisicao=?, tbpropriedades_cep=?, tbpropriedades_cidade=?, tbpropriedades_estado=?, tbpropriedades_bairro=?, tbpropriedades_endereco=?, tbpropriedades_numero=?, tbpropriedades_complemento=? WHERE tbpropriedades_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, propriedades.getNomePropriedade());
+            stmt.setString(2, propriedades.getDataAquisicao());
+            stmt.setString(3, propriedades.getCep());
+            stmt.setString(4, propriedades.getCidade());
+            stmt.setString(5, propriedades.getEstado());
+            stmt.setString(6, propriedades.getBairro());
+            stmt.setString(7, propriedades.getEndereco());
+            stmt.setString(8, propriedades.getNumero());
+            stmt.setString(9, propriedades.getComplemento());
+            stmt.setInt(10, propriedades.getIdPropriedades());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
-    protected List<Propriedades> buscarPorCodigo(int codigo) {
+    public List<Propriedades> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbpropriedades_codigo = ?";
         List<Propriedades> retorno = new ArrayList<>();
         try {

@@ -213,6 +213,11 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
@@ -370,6 +375,23 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableEntradaLote.getSelectedRow() != -1) {
+            int indiceTabela = jTableEntradaLote.getSelectedRow();
+            Object codLote = entradaLotesListModel.getValueAt(indiceTabela, 0);
+            
+            EditarEntradaDeLotes editarEntradaDeLotes = new EditarEntradaDeLotes(entradaLotesDao.buscarPorCodigo((Integer) codLote), this);
+
+            int x = (int) (getParent().getWidth() - editarEntradaDeLotes.getWidth()) / 2;
+            int y = (int) (getParent().getHeight() - editarEntradaDeLotes.getHeight()) / 2;
+
+            editarEntradaDeLotes.setLocation(x, y);
+
+            getParent().add(editarEntradaDeLotes);
+            editarEntradaDeLotes.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
     private void limpaCampos() {
         jTextFieldIdentificador.setText("");
         jComboBoxGranjas.setSelectedIndex(0);
@@ -378,7 +400,7 @@ public class EntradaDeLotes extends javax.swing.JInternalFrame {
         jFormattedTextFieldDataEntrada.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<EntradaLotes> lista = entradaLotesDao.buscarPorNome(nome);
         entradaLotesListModel = new EntradaDeLotesListModel(lista);

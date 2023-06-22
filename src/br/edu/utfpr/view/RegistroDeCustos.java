@@ -10,7 +10,6 @@ import br.edu.utfpr.funcoes.Mensagens;
 import br.edu.utfpr.model.CustosListModel;
 import br.edu.utfpr.model.EntradaDeLotesListModel;
 import br.edu.utfpr.model.ProdutosListModel;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
@@ -176,10 +175,15 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         });
 
         jFormattedTextFieldQuantidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        jFormattedTextFieldQuantidade.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jFormattedTextFieldQuantidadeFocusLost(evt);
+            }
+        });
 
         jLabelQuantidade.setText("Quantidade *");
 
-        jLabelValor.setText("Valor *");
+        jLabelValor.setText("Valor Total *");
 
         jFormattedTextFieldValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
 
@@ -227,7 +231,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelRegistrarCustosAba1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jFormattedTextFieldValor)
-                            .addComponent(jComboBoxProduto, 0, 198, Short.MAX_VALUE))))
+                            .addComponent(jComboBoxProduto, 0, 206, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanelRegistrarCustosAba1Layout.setVerticalGroup(
@@ -301,6 +305,11 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jLabelIdentificadorLotePesquisa.setText("Identificador do Lote");
 
@@ -326,7 +335,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
                         .addComponent(jButtonExcluir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonFecharAba2))
-                    .addComponent(jScrollPaneRegistroCusto, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneRegistroCusto, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
                     .addGroup(jPanelCustosRegistradosAba2Layout.createSequentialGroup()
                         .addComponent(jLabelIdentificadorLotePesquisa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -361,7 +370,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPaneRegistroCustos)
+                .addComponent(jTabbedPaneRegistroCustos, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -409,14 +418,7 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonFecharAba1ActionPerformed
 
     private void jComboBoxProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProdutoActionPerformed
-        if (jComboBoxProduto.getSelectedIndex() != 0) {
-            int codigoProduto = codigosProdutos[jComboBoxProduto.getSelectedIndex()-1];
-            float valorCampo = custosDao.buscaValorProduto(codigoProduto);
-
-            jFormattedTextFieldValor.setText(Float.toString(valorCampo));
-        } else {
-            jFormattedTextFieldValor.setText("");
-        }
+        cauculaValor();
     }//GEN-LAST:event_jComboBoxProdutoActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
@@ -425,6 +427,32 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         custosDao.remover((Integer) codCusto);
         listagemDeDados("");
     }//GEN-LAST:event_jButtonExcluirActionPerformed
+
+    private void jFormattedTextFieldQuantidadeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jFormattedTextFieldQuantidadeFocusLost
+        cauculaValor();
+    }//GEN-LAST:event_jFormattedTextFieldQuantidadeFocusLost
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableRegistroCusto.getSelectedRow() != -1) {
+            int indiceTabela = jTableRegistroCusto.getSelectedRow();
+            Object codCustos = custosListModel.getValueAt(indiceTabela, 0);
+            
+            if (custosDao.verificaLotesBaixado(custosDao.codLotePeloCodCusto((Integer) codCustos))) {
+                // Caso o lote ja tenha sido finalizado
+                mensagens.errorMessage("Edição Inválida","O Lote vinculado a esse Custo já foi baixado");
+            } else {
+                EditarCustos editarCustos = new EditarCustos(custosDao.buscarPorCodigo((Integer) codCustos), this);
+
+                int x = (int) (getParent().getWidth() - editarCustos.getWidth()) / 2;
+                int y = (int) (getParent().getHeight() - editarCustos.getHeight()) / 2;
+
+                editarCustos.setLocation(x, y);
+
+                getParent().add(editarCustos);
+                editarCustos.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
 
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
@@ -435,7 +463,23 @@ public class RegistroDeCustos extends javax.swing.JInternalFrame {
         jFormattedTextFieldData.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    private void cauculaValor() {
+        if (jComboBoxProduto.getSelectedIndex() != 0) {
+            int codigoProduto = codigosProdutos[jComboBoxProduto.getSelectedIndex()-1];
+            float valorCampo = custosDao.buscaValorProduto(codigoProduto);
+            float quantidade = 0;
+            
+            if (!jFormattedTextFieldQuantidade.getText().toString().isEmpty()) {
+                quantidade = Float.parseFloat(jFormattedTextFieldQuantidade.getText().toString().replace(".", "").replace(",", "."));
+            }
+
+            jFormattedTextFieldValor.setText(Float.toString(quantidade*valorCampo).replace(".", ","));
+        } else {
+            jFormattedTextFieldValor.setText("");
+        }
+    }
+    
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<Custos> lista = custosDao.buscarPorNome(nome);
         custosListModel = new CustosListModel(lista);

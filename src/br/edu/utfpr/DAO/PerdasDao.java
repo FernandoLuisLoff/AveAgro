@@ -104,7 +104,25 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
     }
     
     @Override
-    protected List<Perdas> buscarPorCodigo(int codigo) {
+    public boolean alterar(Perdas perdas) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbperdas_lote=?, tbperdas_descricao_motivo=?, tbperdas_contagem_perdas=?, tbperdas_data_contagem=? WHERE tbperdas_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, perdas.getCodLote());
+            stmt.setString(2, perdas.getDescricaoMotivo());
+            stmt.setInt(3, perdas.getContagemPerdas());
+            stmt.setString(4, perdas.getDataContagem());
+            stmt.setInt(5, perdas.getIdRegistroPerdas());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public List<Perdas> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbperdas_lote)";
         sql += " WHERE tbperdas_codigo = ?";
@@ -203,5 +221,25 @@ public class PerdasDao extends AbstractDaoImpl<Perdas>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }  
         return perdasVinculadas>0;
+    }
+    
+    public int codLotePeloCodPerda(int codigo) {
+        String sql = "SELECT tbperdas_lote FROM "+getNomeTabela();
+        sql += " WHERE tbperdas_codigo = ?";
+        int codLote = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codLote = resultSet.getInt("tbperdas_lote");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codLote;
     }
 }

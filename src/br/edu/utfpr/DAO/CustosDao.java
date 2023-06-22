@@ -110,7 +110,27 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
     }
     
     @Override
-    protected List<Custos> buscarPorCodigo(int codigo) {
+    public boolean alterar(Custos custos) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbcustos_lote=?, tbcustos_produto=?, tbcustos_qtd=?, tbcustos_valor=?, tbcustos_descricao_motivo=?, tbcustos_data=? WHERE tbcustos_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, custos.getCodLote());
+            stmt.setInt(2, custos.getCodProduto());
+            stmt.setFloat(3, custos.getQuantidade());
+            stmt.setFloat(4, custos.getvalor());
+            stmt.setString(5, custos.getDescricaoMotivo());
+            stmt.setString(6, custos.getData());
+            stmt.setInt(7, custos.getIdRegistroCustos());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public List<Custos> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbcustos_lote)";
         sql += " INNER JOIN tbprodutos ON (tbprodutos_codigo=tbcustos_produto)";
@@ -190,5 +210,45 @@ public class CustosDao extends AbstractDaoImpl<Custos>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }  
         return perdasVinculadas>0;
+    }
+    
+    public int codLotePeloCodCusto(int codigo) {
+        String sql = "SELECT tbcustos_lote FROM "+getNomeTabela();
+        sql += " WHERE tbcustos_codigo = ?";
+        int codGranja = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codGranja = resultSet.getInt("tbcustos_lote");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codGranja;
+    }
+    
+    public int codProdutoPeloCodCusto(int codigo) {
+        String sql = "SELECT tbcustos_produto FROM "+getNomeTabela();
+        sql += " WHERE tbcustos_codigo = ?";
+        int codGranja = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codGranja = resultSet.getInt("tbcustos_produto");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codGranja;
     }
 }

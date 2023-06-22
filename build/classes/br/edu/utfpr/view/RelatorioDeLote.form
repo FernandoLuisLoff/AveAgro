@@ -25,36 +25,22 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPaneRelatorioDeLote" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneRelatorioDeLote" pref="591" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabelIdentificadorLotePesquisa" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jTextFieldIdentificadorLotePesquisar" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonPesquisar" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jButtonEmitirRelatorio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonFechar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelLote" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxLotes" min="-2" pref="433" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelDataEntrada" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jFormattedTextFieldDataEntrada" min="-2" pref="144" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabelDataSaida" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jFormattedTextFieldDataSaida" min="-2" pref="145" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButtonPesquisar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -65,24 +51,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabelLote" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBoxLotes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jFormattedTextFieldDataSaida" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jFormattedTextFieldDataEntrada" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelDataSaida" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jButtonPesquisar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                      <Component id="jLabelIdentificadorLotePesquisa" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextFieldIdentificadorLotePesquisar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jButtonPesquisar" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPaneRelatorioDeLote" min="-2" pref="213" max="-2" attributes="0"/>
+              <Component id="jScrollPaneRelatorioDeLote" min="-2" pref="173" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonFechar" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -116,48 +93,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEmitirRelatorioActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBoxLotes">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Selecione um Lote"/>
-            <StringItem index="1" value="Lote Teste"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelLote">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Lote "/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelDataSaida">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Data da Sa&#xed;da"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldDataSaida">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="1" type="1"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldDataEntrada">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="1" type="1"/>
-        </Property>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabelDataEntrada">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Data da Entrada"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="jButtonPesquisar">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -186,5 +121,12 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="jLabelIdentificadorLotePesquisa">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Identificador do Lote"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldIdentificadorLotePesquisar">
+    </Component>
   </SubComponents>
 </Form>

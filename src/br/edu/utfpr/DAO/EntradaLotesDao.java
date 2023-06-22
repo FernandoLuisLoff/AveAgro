@@ -104,9 +104,28 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             return false;
         }
     }
+    
+    @Override
+    public boolean alterar(EntradaLotes entradaLotes) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tblotes_indicador=?, tblotes_granja=?, tblotes_qtd_frangos=?, tblotes_valor_entrada=?, tblotes_data_entrada=? WHERE tblotes_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, entradaLotes.getIdentificador());
+            stmt.setInt(2, entradaLotes.getCodGranja());
+            stmt.setFloat(3, entradaLotes.getQuantidadeFrangos());
+            stmt.setFloat(4, entradaLotes.getValorEntradaLote());
+            stmt.setString(5, entradaLotes.getDataEntrada());
+            stmt.setInt(6, entradaLotes.getIdLote());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
 
     @Override
-    protected List<EntradaLotes> buscarPorCodigo(int codigo) {
+    public List<EntradaLotes> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)";
         sql += " WHERE tblotes_codigo = ?";
@@ -204,5 +223,44 @@ public class EntradaLotesDao extends AbstractDaoImpl<EntradaLotes>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }  
         return custosVinculadas>0;
+    }
+    
+    public int codGranjaPeloCodLote(int codigo) {
+        String sql = "SELECT tblotes_granja FROM "+getNomeTabela();
+        sql += " WHERE tblotes_codigo = ?";
+        int codGranja = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codGranja = resultSet.getInt("tblotes_granja");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codGranja;
+    }
+    
+    public List<EntradaLotes> buscarRelatorioPorNome(String nome) {
+        String sql = "SELECT * FROM "+getNomeTabela();
+        sql += " INNER JOIN tbgranjas ON (tbgranjas_codigo=tblotes_granja)";
+        sql += " WHERE tblotes_indicador LIKE ?";
+        List<EntradaLotes> retorno = new ArrayList<>();
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, "%" + nome + "%"); //garante a busca da string com começo.
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                EntradaLotes entradaLotes = mapResultSetToEntity(rs);
+                retorno.add(entradaLotes);
+            }
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }
+        return retorno;
     }
 }

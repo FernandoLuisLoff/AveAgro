@@ -228,6 +228,11 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jLabelIdentificadorGranjaPesquisa.setText("Identificador da Granja");
 
@@ -370,6 +375,23 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableGranjas.getSelectedRow() != -1) {
+            int indiceTabela = jTableGranjas.getSelectedRow();
+            Object codGranja = granjasListModel.getValueAt(indiceTabela, 0);
+            
+            EditarGranja editarGranja = new EditarGranja(granjasDao.buscarPorCodigo((Integer) codGranja), this);
+
+            int x = (int) (getParent().getWidth() - editarGranja.getWidth()) / 2;
+            int y = (int) (getParent().getHeight() - editarGranja.getHeight()) / 2;
+
+            editarGranja.setLocation(x, y);
+
+            getParent().add(editarGranja);
+            editarGranja.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
     private void limpaCampos() {
         jTextFieldIdentificador.setText("");
         jComboBoxPropriedade.setSelectedIndex(0);
@@ -377,7 +399,7 @@ public class CadastroDeGranjas extends javax.swing.JInternalFrame {
         jFormattedTextFieldQuantidadeFrangosSuportadas.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<Granjas> lista = granjasDao.buscarPorNome(nome);
         granjasListModel = new GranjasListModel(lista);

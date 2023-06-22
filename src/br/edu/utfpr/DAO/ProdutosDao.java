@@ -90,7 +90,7 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
     }
 
     @Override
-    protected List<Produtos> buscarPorCodigo(int codigo) {
+    public List<Produtos> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela()+" WHERE tbprodutos_codigo = ?";
         List<Produtos> retorno = new ArrayList<>();
         try {
@@ -117,6 +117,25 @@ public class ProdutosDao extends AbstractDaoImpl<Produtos>{
             stmt.setInt(1, id);
             stmt.execute();
             return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean alterar(Produtos produtos) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbprodutos_produto=?, tbprodutos_categoria=?, tbprodutos_qtd_vol=?, tbprodutos_un_medida=?, tbprodutos_valor=? WHERE tbprodutos_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, produtos.getProduto());
+            stmt.setString(2, produtos.getCategoria());
+            stmt.setFloat(3, produtos.getQuantidadeVolume());
+            stmt.setString(4, produtos.getUnidadeMedida());
+            stmt.setFloat(5, produtos.getValor());
+            stmt.setInt(6, produtos.getIdProdutos());
+            stmt.execute();
+        return true;
         } catch (SQLException ex) {
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
             return false;

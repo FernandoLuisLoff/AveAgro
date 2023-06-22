@@ -105,7 +105,25 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
     }
     
     @Override
-    protected List<Granjas> buscarPorCodigo(int codigo) {
+    public boolean alterar(Granjas granjas) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbgranjas_identificador=?, tbgranjas_propriedade=?, tbgranjas_data_ini_atvs=?, tbgranjas_qtd_frangos_suportada=? WHERE tbgranjas_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setString(1, granjas.getIdentificador());
+            stmt.setInt(2, granjas.getCodPropriedade());
+            stmt.setString(3, granjas.getDataIniAtividades());
+            stmt.setInt(4, granjas.getQuantidadeFrangosSuportada());
+            stmt.setInt(5, granjas.getIdGranja());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public List<Granjas> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tbpropriedades ON (tbpropriedades_codigo=tbgranjas_propriedade)";
         sql += " WHERE tbgranjas_codigo = ?";
@@ -163,5 +181,25 @@ public class GranjasDao extends AbstractDaoImpl<Granjas>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }  
         return lotesVinculadas>0;
+    }
+    
+    public int codPropriedadePeloCodGranja(int codigo) {
+        String sql = "SELECT tbgranjas_propriedade FROM "+getNomeTabela();
+        sql += " WHERE tbgranjas_codigo = ?";
+        int codPropriedade = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codPropriedade = resultSet.getInt("tbgranjas_propriedade");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codPropriedade;
     }
 }

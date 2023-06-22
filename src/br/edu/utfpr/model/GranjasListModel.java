@@ -35,18 +35,18 @@ public class GranjasListModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        Granjas propriedade = listaGranjas.get(row);
+        Granjas granja = listaGranjas.get(row);
         switch (column) {
             case 0:
-                return propriedade.getIdGranja();
+                return granja.getIdGranja();
             case 1:
-                return propriedade.getIdentificador();
+                return granja.getIdentificador();
             case 2:
-                return propriedade.getPropriedade();
+                return granja.getPropriedade();
             case 3:
-                return propriedade.getDataIniAtividades();
+                return granja.getDataIniAtividades();
             case 4:
-                return propriedade.getQuantidadeFrangosSuportada();
+                return granja.getQuantidadeFrangosSuportada();
             default:
                 break;
         }

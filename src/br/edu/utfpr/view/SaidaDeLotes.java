@@ -178,6 +178,11 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
 
         jButtonEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/editar.png"))); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/excluir.png"))); // NOI18N
         jButtonExcluir.setText("Excluir");
@@ -322,13 +327,30 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
         listagemDeDados("");
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        if (jTableSaidaLote.getSelectedRow() != -1) {
+            int indiceTabela = jTableSaidaLote.getSelectedRow();
+            Object codSaidaLotes = saidaDeLotesListModel.getValueAt(indiceTabela, 0);
+            
+            EditarSaidaDeLotes editarSaidaDeLotes = new EditarSaidaDeLotes(saidaLotesDao.buscarPorCodigo((Integer) codSaidaLotes), this);
+
+            int x = (int) (getParent().getWidth() - editarSaidaDeLotes.getWidth()) / 2;
+            int y = (int) (getParent().getHeight() - editarSaidaDeLotes.getHeight()) / 2;
+
+            editarSaidaDeLotes.setLocation(x, y);
+
+            getParent().add(editarSaidaDeLotes);
+            editarSaidaDeLotes.setVisible(true);
+        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
     private void limpaCampos() {
         jComboBoxLotes.setSelectedIndex(0);
         jFormattedTextFieldValorSaida.setText("");
         jFormattedTextFieldDataSaida.setText("");
     }
     
-    private void listagemDeDados(String nome) {
+    public void listagemDeDados(String nome) {
         // Listagem na tabela
         List<SaidaLotes> lista = saidaLotesDao.buscarPorNome(nome);
         saidaDeLotesListModel = new SaidaLotesListModel(lista);
@@ -340,7 +362,7 @@ public class SaidaDeLotes extends javax.swing.JInternalFrame {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote");
             jComboBoxLotes.requestFocus();
             return false;
-        } else if (saidaLotesDao.verificaLotesBaixado(codigosLotes[jComboBoxLotes.getSelectedIndex()-1])) {
+        } else if (saidaLotesDao.verificaLotesBaixado(codigosLotes[jComboBoxLotes.getSelectedIndex()-1], 0)) {
             mensagens.errorMessage("Campo Inválido","Selecione um Lote que já não foi baixado");
             jComboBoxLotes.requestFocus();
             return false;

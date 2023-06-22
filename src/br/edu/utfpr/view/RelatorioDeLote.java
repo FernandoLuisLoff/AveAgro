@@ -28,15 +28,11 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
 
         jButtonFechar = new javax.swing.JButton();
         jButtonEmitirRelatorio = new javax.swing.JButton();
-        jComboBoxLotes = new javax.swing.JComboBox<>();
-        jLabelLote = new javax.swing.JLabel();
-        jLabelDataSaida = new javax.swing.JLabel();
-        jFormattedTextFieldDataSaida = new javax.swing.JFormattedTextField();
-        jFormattedTextFieldDataEntrada = new javax.swing.JFormattedTextField();
-        jLabelDataEntrada = new javax.swing.JLabel();
         jButtonPesquisar = new javax.swing.JButton();
         jScrollPaneRelatorioDeLote = new javax.swing.JScrollPane();
         jTableRelatorioDeLote = new javax.swing.JTable();
+        jLabelIdentificadorLotePesquisa = new javax.swing.JLabel();
+        jTextFieldIdentificadorLotePesquisar = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -58,18 +54,6 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
                 jButtonEmitirRelatorioActionPerformed(evt);
             }
         });
-
-        jComboBoxLotes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um Lote", "Lote Teste" }));
-
-        jLabelLote.setText("Lote ");
-
-        jLabelDataSaida.setText("Data da Saída");
-
-        jFormattedTextFieldDataSaida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-
-        jFormattedTextFieldDataEntrada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-
-        jLabelDataEntrada.setText("Data da Entrada");
 
         jButtonPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/edu/utfpr/icones/pesquisar.png"))); // NOI18N
         jButtonPesquisar.setText("Perquisar");
@@ -107,6 +91,8 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
         });
         jScrollPaneRelatorioDeLote.setViewportView(jTableRelatorioDeLote);
 
+        jLabelIdentificadorLotePesquisa.setText("Identificador do Lote");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,49 +100,31 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneRelatorioDeLote)
+                    .addComponent(jScrollPaneRelatorioDeLote, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelIdentificadorLotePesquisa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldIdentificadorLotePesquisar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonPesquisar))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonEmitirRelatorio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonFechar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelLote)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxLotes, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelDataEntrada)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFieldDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelDataSaida)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jFormattedTextFieldDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonPesquisar)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jButtonFechar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelLote)
-                            .addComponent(jComboBoxLotes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jFormattedTextFieldDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelDataEntrada)
-                            .addComponent(jFormattedTextFieldDataEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelDataSaida)))
-                    .addComponent(jButtonPesquisar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonPesquisar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelIdentificadorLotePesquisa)
+                        .addComponent(jTextFieldIdentificadorLotePesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneRelatorioDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneRelatorioDeLote, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonFechar)
@@ -184,13 +152,9 @@ public class RelatorioDeLote extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonEmitirRelatorio;
     private javax.swing.JButton jButtonFechar;
     private javax.swing.JButton jButtonPesquisar;
-    private javax.swing.JComboBox<String> jComboBoxLotes;
-    private javax.swing.JFormattedTextField jFormattedTextFieldDataEntrada;
-    private javax.swing.JFormattedTextField jFormattedTextFieldDataSaida;
-    private javax.swing.JLabel jLabelDataEntrada;
-    private javax.swing.JLabel jLabelDataSaida;
-    private javax.swing.JLabel jLabelLote;
+    private javax.swing.JLabel jLabelIdentificadorLotePesquisa;
     private javax.swing.JScrollPane jScrollPaneRelatorioDeLote;
     private javax.swing.JTable jTableRelatorioDeLote;
+    private javax.swing.JTextField jTextFieldIdentificadorLotePesquisar;
     // End of variables declaration//GEN-END:variables
 }

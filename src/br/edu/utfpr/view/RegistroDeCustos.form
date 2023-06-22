@@ -99,7 +99,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jFormattedTextFieldValor" max="32767" attributes="0"/>
-                                  <Component id="jComboBoxProduto" pref="198" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxProduto" pref="206" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -212,6 +212,9 @@
                   <Format format="#,##0.00" subtype="-1" type="0"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jFormattedTextFieldQuantidadeFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelQuantidade">
               <Properties>
@@ -220,7 +223,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelValor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Valor *"/>
+                <Property name="text" type="java.lang.String" value="Valor Total *"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldValor">
@@ -275,7 +278,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButtonFecharAba2" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPaneRegistroCusto" alignment="0" pref="529" max="32767" attributes="0"/>
+                          <Component id="jScrollPaneRegistroCusto" alignment="0" pref="552" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabelIdentificadorLotePesquisa" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -360,6 +363,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditarActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabelIdentificadorLotePesquisa">
               <Properties>

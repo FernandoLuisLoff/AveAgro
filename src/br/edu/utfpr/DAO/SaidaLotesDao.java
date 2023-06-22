@@ -102,7 +102,24 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
     }
     
     @Override
-    protected List<SaidaLotes> buscarPorCodigo(int codigo) {
+    public boolean alterar(SaidaLotes saidaLotes) {
+        String sql = "UPDATE "+getNomeTabela()+" SET tbsaidalote_lote=?, tbsaidalote_valor_saida=?, tbsaidalote_data_saida=? WHERE tbsaidalote_codigo=?";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, saidaLotes.getCodLote());
+            stmt.setFloat(2, saidaLotes.getValorSaidaLote());
+            stmt.setString(3, saidaLotes.getDataSaida());
+            stmt.setInt(4, saidaLotes.getIdSaidaLote());
+            stmt.execute();
+        return true;
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+            return false;
+        }
+    }
+    
+    @Override
+    public List<SaidaLotes> buscarPorCodigo(int codigo) {
         String sql = "SELECT * FROM "+getNomeTabela();
         sql += " INNER JOIN tblotes ON (tblotes_codigo=tbsaidalote_lote)";
         sql += " WHERE tbsaidalote_codigo = ?";
@@ -142,13 +159,15 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
         return retorno;
     }
     
-    public boolean verificaLotesBaixado(int codigo) {
+    public boolean verificaLotesBaixado(int codigoLote, int codigoSaidaLote) {
         String sql = "SELECT count(tbsaidalote_lote) AS saidasVinculadas FROM tbsaidalote";
         sql += " WHERE tbsaidalote_lote = ?";
+        sql += " AND tbsaidalote_codigo <> ?";
         int perdasVinculadas = 0;
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, codigo); //garante a busca
+            stmt.setInt(1, codigoLote); //garante a busca
+            stmt.setInt(2, codigoSaidaLote); //garante a busca
             rs = stmt.executeQuery();
             while (rs.next()) {
                ResultSet resultSet = rs;
@@ -160,5 +179,25 @@ public class SaidaLotesDao extends AbstractDaoImpl<SaidaLotes>{
             logger.severe("Erro ao executar consulta: " + ex.getMessage());
         }  
         return perdasVinculadas>0;
+    }
+    
+    public int codLotePeloCodSaidaLote(int codigo) {
+        String sql = "SELECT tbsaidalote_lote FROM "+getNomeTabela();
+        sql += " WHERE tbsaidalote_codigo = ?";
+        int codGranja = 0;
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, codigo); //garante a busca
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+               ResultSet resultSet = rs;
+               codGranja = resultSet.getInt("tbsaidalote_lote");
+            }
+            stmt.close();
+            rs.close();
+        } catch (SQLException ex) {
+            logger.severe("Erro ao executar consulta: " + ex.getMessage());
+        }  
+        return codGranja;
     }
 }
